@@ -113,9 +113,10 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
-<img src="" width=600>
+<img src="Wireframe Mockup.png" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
+<img src="walkthrough.gif">
 
 ### [BONUS] Interactive Prototype
 
