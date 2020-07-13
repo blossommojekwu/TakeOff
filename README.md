@@ -133,6 +133,7 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 | Property | Type | Description |
 | --- | --- | --- |
 | destination | String | name of place that you search/add |
+|image | File | image from Google Places API that displays destination |
 | location | Parse GeoPoint | longitude and latitude of destination searched/added |
 | description | String | description of location |
 
