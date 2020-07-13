@@ -79,7 +79,6 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
     * user can add list of museums/restaurants/locations to visit
     * user can display options in layout with Google Places SDK
     * user can remove an option with feature (long click)
-    * user can double click on option to like
     * Optional: user can view list of recommended places to go at destination
 * OPTIONAL: 
     * user can chat with followers/ travel buddies
