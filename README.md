@@ -79,7 +79,6 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
     * user can add list of museums/restaurants/locations to visit
     * user can display options in layout with Google Places SDK
     * user can remove an option with feature (long click)
-    * user can double click on option to like
     * Optional: user can view list of recommended places to go at destination
 * OPTIONAL: 
     * user can chat with followers/ travel buddies
@@ -121,9 +120,41 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 ### [BONUS] Interactive Prototype
 
 ## Schema 
-[This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+#### User
+| Property | Type | Description |
+| --- | --- | --- |
+| objectId | String | unique id for the user post (default field) |
+| author | Pointer to User | image author |
+|image | File | image that user profile picture |
+| location | Parse GeoPoint | Location of user |
+
+#### Destinations
+| Property | Type | Description |
+| --- | --- | --- |
+| destination | String | name of place that you search/add |
+|image | File | image from Google Places API that displays destination |
+| location | Parse GeoPoint | longitude and latitude of destination searched/added |
+| description | String | description of location |
+
+
+#### Hotels
+| Property | Type | Description |
+| --- | --- | --- |
+| name | String | name of hotel |
+|image | File | image of hotel |
+| price | long | price of hotel room |
+| rating | double | rating of hotel |
+|description | String | hotel room description |
+
+#### VisitPlace
+| Property | Type | Description |
+| --- | --- | --- |
+| name | String | name of restaurant, museum, tourist attraction |
+| image | File | image of visit place |
+|description | String | description of visit place |
+
+
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
