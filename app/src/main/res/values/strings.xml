@@ -3,4 +3,12 @@
     <string name="slogan">Get Ready to TakeOff!</string>
     <string name="incorrect_login">Incorrect Login</string>
     <string name="welcome">TAKE OFF!</string>
+
+    <!-- SignUp Screen Messages -->
+    <string name="new_profilepic">New Profile Picture</string>
+    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="create_account_empty">Username and/or password cannot be empty</string>
+    <string name="need_profilepic">You need a profile picture!</string>
+    <string name="login_new_user">Login New User</string>
+    <string name="signup_error">Error while signing up</string>
 </resources>
