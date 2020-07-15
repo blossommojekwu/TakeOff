@@ -11,4 +11,9 @@
     <string name="need_profilepic">You need a profile picture!</string>
     <string name="login_new_user">Login New User</string>
     <string name="signup_error">Error while signing up</string>
+    <string name="home">HOME</string>
+    <string name="plan">PLAN</string>
+    <string name="stay">STAY</string>
+    <string name="visit">VISIT</string>
+    <string name="saving_error">Error while saving</string>
 </resources>

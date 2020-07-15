@@ -4,4 +4,5 @@
     <dimen name="marginMedium">50dp</dimen>
     <dimen name="imageMedium">200dp</dimen>
     <dimen name="imageLarge">300dp</dimen>
+    <dimen name="card_corner_radius">10dp</dimen>
 </resources>

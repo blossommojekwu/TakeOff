@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/actionHome"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionPlan"
+        android:icon="@drawable/ic_task_white"
+        android:title="Plan"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionStay"
+        android:icon="@drawable/ic_hotel_white"
+        android:title="Stay"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionVisit"
+        android:icon="@drawable/ic_explore_black"
+        android:title="Visit"
+        app:showAsAction="always" />
 </menu>

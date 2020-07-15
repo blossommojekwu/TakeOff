@@ -34,6 +34,8 @@ public class SignupActivity extends AppCompatActivity {
 
     public static final String TAG = "SignupActivity";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private static final String mProfilePicFileName = "profile_photo.jpg";
+    private static final String profilePicture = "profilePicture";
 
     private TextInputEditText mEtSignupUsername;
     private TextInputEditText mEtSignupPassword;
@@ -41,8 +43,6 @@ public class SignupActivity extends AppCompatActivity {
     private ImageView mIvProfilePic;
     private MaterialButton mBtnCreateAccount;
     private File mProfilePicFile;
-    private String mProfilePicFileName = "profile_photo.jpg";
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,7 +105,7 @@ public class SignupActivity extends AppCompatActivity {
         ParseUser user = new ParseUser();
         user.setUsername(username);
         user.setPassword(password);
-        user.put("profilePicture", profilePicFile);
+        user.put(profilePicture, profilePicFile);
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
