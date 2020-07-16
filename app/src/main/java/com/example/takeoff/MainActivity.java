@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mButtomNavigation;
     private File mDestinationPhotoFile;
     private String mDestinationPhotoFileName = "destination_photo.jpg";
+    final FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,19 +103,17 @@ public class MainActivity extends AppCompatActivity {
         mButtomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment fragment;
+                Fragment fragment = null;
                 switch (menuItem.getItemId()) {
                     case R.id.actionSearch:
                         Log.i(TAG, "Clicked on SearchBar");
                         Toast.makeText(MainActivity.this, "Clicked on SearchBar", Toast.LENGTH_SHORT).show();
                         //onSearchCalled();
                         return true;
-                    case R.id.actionHome:
-                        fragment = new DestinationsFragment();
+                    case R.id.actionHome: fragment = new DestinationsFragment();
                         Toast.makeText(MainActivity.this, R.string.home, Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.actionPlan:
-                        new DestinationsFragment();
+                    case R.id.actionPlan: fragment = new PlanFragment();
                         Toast.makeText(MainActivity.this, R.string.plan, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionStay:
@@ -127,10 +126,11 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, R.string.visit, Toast.LENGTH_SHORT).show();
                         break;
                 }
-                //fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
                 return true;
             }
         });
+        mButtomNavigation.setSelectedItemId(R.id.actionHome);
     }
 
     public void onSearchCalled() {
