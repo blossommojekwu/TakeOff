@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="marginTiny">5dp</dimen>
     <dimen name="marginSmall">10dp</dimen>
     <dimen name="marginMedium">50dp</dimen>
+    <dimen name="marginLarge">70dp</dimen>
     <dimen name="imageMedium">200dp</dimen>
     <dimen name="imageLarge">300dp</dimen>
     <dimen name="card_corner_radius">10dp</dimen>
+    <dimen name="dividerHeight">2dp</dimen>
 </resources>

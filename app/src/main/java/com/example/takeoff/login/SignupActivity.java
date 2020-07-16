@@ -1,4 +1,4 @@
-package com.example.takeoff;
+package com.example.takeoff.login;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.example.takeoff.R;
 import com.example.takeoff.databinding.ActivitySignupBinding;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;

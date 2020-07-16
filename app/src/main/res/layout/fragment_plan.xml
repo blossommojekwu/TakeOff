@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlanFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".plan.PlanFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -25,10 +26,54 @@
             android:id="@+id/tvSelectedDates"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/marginMedium"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/marginSmall"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dividerHeight"
+            android:background="?android:attr/listDivider"
+            android:layout_marginBottom="@dimen/marginSmall"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChecklist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/marginLarge">
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|left"
+            android:layout_marginRight="@dimen/marginLarge">
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="@dimen/marginSmall"
+            app:srcCompat="@drawable/ic_outline_add_24"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etChecklistItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/marginLarge"
+            android:hint="hint"
+            app:layout_anchor="@+id/textInputLayout"
+            app:layout_anchorGravity="center" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>

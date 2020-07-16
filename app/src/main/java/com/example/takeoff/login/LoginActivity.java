@@ -1,4 +1,4 @@
-package com.example.takeoff;
+package com.example.takeoff.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.takeoff.MainActivity;
+import com.example.takeoff.R;
 import com.example.takeoff.databinding.ActivityLoginBinding;
 import com.google.android.material.textfield.TextInputEditText;
 import com.parse.LogInCallback;
