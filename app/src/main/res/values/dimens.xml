@@ -8,4 +8,6 @@
     <dimen name="imageLarge">300dp</dimen>
     <dimen name="card_corner_radius">10dp</dimen>
     <dimen name="dividerHeight">2dp</dimen>
+    <dimen name="textWidth">300dp</dimen>
+    <dimen name="btnSize">50dp</dimen>
 </resources>

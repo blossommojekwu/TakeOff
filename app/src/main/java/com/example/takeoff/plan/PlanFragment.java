@@ -1,11 +1,14 @@
 package com.example.takeoff.plan;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +39,7 @@ import java.util.TimeZone;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PlanFragment extends Fragment {
+public class PlanFragment extends Fragment implements EditChecklistDialogFragment.EditChecklistDialogListener {
 
     public static final String TAG = "PlanFragment";
     private MaterialButton mBtnDatePicker;
@@ -110,6 +113,7 @@ public class PlanFragment extends Fragment {
            @Override
            public void onItemClicked(int position) {
                Log.d(TAG, "Single click at position " + position);
+               showEditDialog();
            }
        };
        checklistAdapter = new ChecklistAdapter(checklistItems, onClickListener, onLongClickListener);
@@ -129,6 +133,7 @@ public class PlanFragment extends Fragment {
            }
        });
     }
+
     //return file where we store list of checklist items
     private File getDataFile(){
         return new File(getContext().getFilesDir(), "checklistData.txt");
@@ -149,5 +154,20 @@ public class PlanFragment extends Fragment {
         } catch (IOException e) {
             Log.e(TAG, "Error writing items", e);
         }
+    }
+
+    private void showEditDialog() {
+        FragmentManager fragmentManager = getFragmentManager();
+        EditChecklistDialogFragment editChecklistDialogFragment = EditChecklistDialogFragment.newInstance("Some Title");
+        // SETS the target fragment for use later when sending results
+        editChecklistDialogFragment.setTargetFragment(PlanFragment.this, 300);
+        editChecklistDialogFragment.show(fragmentManager, "fragment_edit_checklist");
+    }
+
+    // This is called when the dialog is completed and the results have been passed
+    @Override
+    public void onFinishEditDialog(String inputText) {
+        mEtChecklistItem.setText(inputText);
+        Toast.makeText(getContext(), "Changed to: " + inputText, Toast.LENGTH_SHORT).show();
     }
 }
