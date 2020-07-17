@@ -1,8 +1,6 @@
 package com.example.takeoff.destinations;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.takeoff.R;
 import com.example.takeoff.models.Destination;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.libraries.places.api.model.PhotoMetadata;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.FetchPhotoRequest;
+import com.parse.ParseFile;
 
 import java.util.List;
+
+/** DestinationsAdapter:
+ * - displays data from Destination model to row(item_destination cardview) in Recycler View
+ */
 
 public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapter.ViewHolder> {
 
@@ -32,7 +32,6 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
         this.mDestinations = destinations;
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,7 +42,7 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
     @Override
     public void onBindViewHolder(@NonNull DestinationsAdapter.ViewHolder holder, int position) {
         Destination destination = mDestinations.get(position);
-        //take viewholder passed in and pass data of the post into that viewholder
+        //take viewholder passed in and pass data of the destination into that viewholder
         holder.bind(destination);
     }
 
@@ -69,46 +68,16 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
             tvDestinationName = itemView.findViewById(R.id.tvDestinationName);
             ivDestinationImage = itemView.findViewById(R.id.ivDestinationImage);
             tvDestionationDescription = itemView.findViewById(R.id.tvDestinationDescription);
-
         }
 
         public void bind(Destination destination) {
             //Bind the post data to the view elements
             tvDestinationName.setText(destination.getName());
             tvDestionationDescription.setText(destination.getDescription());
+            ParseFile image = destination.getImage();
+            if (image != null) {
+                Glide.with(mContext).load(image.getUrl()).into(ivDestinationImage);
+            }
         }
     }
 }
-            /*
-            setPhoto(place);
-        }
-
-        private void setPhoto(Place place){
-            // Get the photo metadata.
-            final List<PhotoMetadata> metadata = place.getPhotoMetadatas();
-            if (metadata == null || metadata.isEmpty()) {
-                Log.w(TAG, "No photo metadata.");
-                return;
-            }
-            final PhotoMetadata photoMetadata = metadata.get(0);
-
-            // Get the attribution text.
-            final String attributions = photoMetadata.getAttributions();
-
-            // Create a FetchPhotoRequest.
-            final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-                    .build();
-            placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
-                Bitmap bitmap = fetchPhotoResponse.getBitmap();
-                //
-                ivDestinationImage.setImageBitmap(bitmap);
-            }).addOnFailureListener((exception) -> {
-                if (exception instanceof ApiException) {
-                    final ApiException apiException = (ApiException) exception;
-                    Log.e(TAG, "Place not found: " + exception.getMessage());
-                    final int statusCode = apiException.getStatusCode();
-                    // TODO: Handle error with given status code.
-                }
-            });
-        }
-        */

@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
-    private static final Integer IMAGE_MAX_WIDTH = 300;
-    private static final Integer IMAGE_MAX_HEIGHT= 300;
     PlacesClient placesClient;
     Place place;
     private BottomNavigationView mButtomNavigation;
@@ -107,12 +105,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, R.string.plan, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionStay:
-                        new DestinationsFragment();
                         Toast.makeText(MainActivity.this, R.string.stay, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionVisit:
                     default:
-                        new DestinationsFragment();
                         Toast.makeText(MainActivity.this, R.string.visit, Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -192,8 +188,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Create a FetchPhotoRequest.
         final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-                //.setMaxWidth(IMAGE_MAX_WIDTH)
-                //.setMaxHeight(IMAGE_MAX_HEIGHT)
                 .build();
         placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
             Bitmap bitmap = fetchPhotoResponse.getBitmap();

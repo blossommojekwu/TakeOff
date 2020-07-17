@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-//CheckList Adapter: responsible for displaying data from the model into a row in the recycle view
+/** CheckList Adapter:
+ * - responsible for displaying data from the model into a row in the recycler view
+ */
+
 public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.ViewHolder> {
 
     public interface OnClickListener{
@@ -75,7 +78,6 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.View
                 }
             });
             tvChecklistItem.setOnLongClickListener(new View.OnLongClickListener() {
-
                 @Override
                 public boolean onLongClick(View view) {
                     //notify the listener about position that was long pressed
