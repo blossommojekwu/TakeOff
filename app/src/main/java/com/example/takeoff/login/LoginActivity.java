@@ -9,13 +9,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.takeoff.MainActivity;
+import com.example.takeoff.destinations.MainActivity;
 import com.example.takeoff.R;
 import com.example.takeoff.databinding.ActivityLoginBinding;
 import com.google.android.material.textfield.TextInputEditText;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
+/** Login Activity:
+ * - allows user to enter valid username and password and login to view DestinationFragment
+ */
 
 public class LoginActivity extends AppCompatActivity {
 

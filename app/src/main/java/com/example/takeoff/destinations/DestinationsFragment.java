@@ -1,7 +1,10 @@
-package com.example.takeoff;
+package com.example.takeoff.destinations;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.example.takeoff.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +26,7 @@ public class DestinationsFragment extends Fragment {
     public static final String TAG = "DestinationsFragment";
     private SwipeRefreshLayout mSwipeContainer;
     private RecyclerView mRvDestinations;
+
 
     public DestinationsFragment() {
         // Required empty public constructor

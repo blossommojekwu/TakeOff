@@ -1,12 +1,10 @@
 package com.example.takeoff.plan;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,20 +35,23 @@ import java.util.List;
 import java.util.TimeZone;
 
 /**
- * A simple {@link Fragment} subclass.
+ * PlanFragment contains:
+ * - Date Picker button that allows user to select dates on calender to display selected dates as text
+ * - planning checklist to allow user to add, remove, and edit checklist items.
  */
 public class PlanFragment extends Fragment implements EditChecklistDialogFragment.EditChecklistDialogListener {
 
     public static final String TAG = "PlanFragment";
+    private int KEY_ITEM_POSITION = 0;
     private MaterialButton mBtnDatePicker;
     private TextView mTvSelectedDates;
 
     //initialize checklist items
-    List<String> checklistItems;
+    private List<String> mChecklistItems;
     private FloatingActionButton mFloatingActionBtn;
     private RecyclerView mRvChecklist;
     private TextInputEditText mEtChecklistItem;
-    ChecklistAdapter checklistAdapter;
+    private ChecklistAdapter mChecklistAdapter;
 
     public PlanFragment() {
         // Required empty public constructor
@@ -100,11 +101,12 @@ public class PlanFragment extends Fragment implements EditChecklistDialogFragmen
        ChecklistAdapter.OnLongClickListener onLongClickListener = new ChecklistAdapter.OnLongClickListener() {
            @Override
            public void onItemLongClicked(int position) {
+               String removedItem = mChecklistItems.get(position);
                //delete the item from the model
-               checklistItems.remove(position);
+               mChecklistItems.remove(position);
                //notify the adapter
-               checklistAdapter.notifyItemRemoved(position);
-               Toast.makeText(getContext(), "Won't be ...", Toast.LENGTH_SHORT).show();
+               mChecklistAdapter.notifyItemRemoved(position);
+               Toast.makeText(getContext(), R.string.checklist_remove, Toast.LENGTH_SHORT).show();
                saveItems();
            }
        };
@@ -113,11 +115,13 @@ public class PlanFragment extends Fragment implements EditChecklistDialogFragmen
            @Override
            public void onItemClicked(int position) {
                Log.d(TAG, "Single click at position " + position);
+               KEY_ITEM_POSITION = position;
+               //display the dialog
                showEditDialog();
            }
        };
-       checklistAdapter = new ChecklistAdapter(checklistItems, onClickListener, onLongClickListener);
-       mRvChecklist.setAdapter(checklistAdapter);
+        mChecklistAdapter = new ChecklistAdapter(mChecklistItems, onClickListener, onLongClickListener);
+       mRvChecklist.setAdapter(mChecklistAdapter);
        mRvChecklist.setLayoutManager(new LinearLayoutManager(getContext()));
 
        mFloatingActionBtn.setOnClickListener(new View.OnClickListener() {
@@ -125,9 +129,9 @@ public class PlanFragment extends Fragment implements EditChecklistDialogFragmen
            public void onClick(View view) {
                String checklistItem = mEtChecklistItem.getText().toString();
                //add item to the model
-               checklistItems.add(checklistItem);
+               mChecklistItems.add(checklistItem);
                //notify adapter that an item is inserted
-               checklistAdapter.notifyItemInserted(checklistItems.size()-1);
+               mChecklistAdapter.notifyItemInserted(mChecklistItems.size()-1);
                //clear edit text once submitted
                mEtChecklistItem.setText("");
            }
@@ -141,16 +145,16 @@ public class PlanFragment extends Fragment implements EditChecklistDialogFragmen
     //this function will load items by reading every line of the data file
     private void loadItems(){
         try {
-            checklistItems = new ArrayList<>(org.apache.commons.io.FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
+            mChecklistItems = new ArrayList<>(org.apache.commons.io.FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
         } catch (IOException e) {
             Log.e(TAG, "Error reading items", e);
-            checklistItems = new ArrayList<>();
+            mChecklistItems = new ArrayList<>();
         }
     }
     //this function saves items by writing them into the data file
     private void saveItems(){
         try {
-            FileUtils.writeLines(getDataFile(), checklistItems);
+            FileUtils.writeLines(getDataFile(), mChecklistItems);
         } catch (IOException e) {
             Log.e(TAG, "Error writing items", e);
         }
@@ -167,7 +171,13 @@ public class PlanFragment extends Fragment implements EditChecklistDialogFragmen
     // This is called when the dialog is completed and the results have been passed
     @Override
     public void onFinishEditDialog(String inputText) {
-        mEtChecklistItem.setText(inputText);
-        Toast.makeText(getContext(), "Changed to: " + inputText, Toast.LENGTH_SHORT).show();
+        //mEtChecklistItem.setText(inputText);
+        //update the model at the right position with the new item text
+        mChecklistItems.set(KEY_ITEM_POSITION, inputText);
+        //notify the adapter
+        mChecklistAdapter.notifyItemChanged(KEY_ITEM_POSITION);
+        //persist the changes
+        saveItems();
+        Toast.makeText(getContext(), R.string.checklist_change, Toast.LENGTH_SHORT).show();
     }
 }

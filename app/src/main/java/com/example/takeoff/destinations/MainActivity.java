@@ -1,4 +1,4 @@
-package com.example.takeoff;
+package com.example.takeoff.destinations;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.takeoff.R;
 import com.example.takeoff.databinding.ActivityMainBinding;
 import com.example.takeoff.models.Destination;
 import com.example.takeoff.plan.PlanFragment;
@@ -37,11 +38,14 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+/* MainActivity contains:
+* - bottom navigation view that switches to different fragments based on menu icons
+* - search icon that launches Google Places autocomplete activity and returns destination clicked on
+*   to parse server
+*/
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,15 +56,14 @@ public class MainActivity extends AppCompatActivity {
     PlacesClient placesClient;
     Place place;
     private BottomNavigationView mButtomNavigation;
-    private File mDestinationPhotoFile;
-    private String mDestinationPhotoFileName = "destination_photo.jpg";
     final FragmentManager fragmentManager = getSupportFragmentManager();
+    private ParseFile mDestinationPhotoFile;
+    private String mDestinationPhotoFileName = "destination_photo.jpg";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search_view, menu);
-        MenuItem searchItem = menu.findItem(R.id.actionSearch);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -91,16 +94,12 @@ public class MainActivity extends AppCompatActivity {
         placesClient = Places.createClient(this);
 
         mButtomNavigation = mainBinding.bottomNavigation;
+
         mButtomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Fragment fragment = null;
                 switch (menuItem.getItemId()) {
-                    case R.id.actionSearch:
-                        Log.i(TAG, "Clicked on SearchBar");
-                        Toast.makeText(MainActivity.this, "Clicked on SearchBar", Toast.LENGTH_SHORT).show();
-                        //onSearchCalled();
-                        return true;
                     case R.id.actionHome: fragment = new DestinationsFragment();
                         Toast.makeText(MainActivity.this, R.string.home, Toast.LENGTH_SHORT).show();
                         break;
@@ -155,75 +154,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void savePhoto(Destination destination){
-        // Get the photo metadata.
-        final List<PhotoMetadata> metadata = place.getPhotoMetadatas();
-        if (metadata == null || metadata.isEmpty()) {
-            Log.w(TAG, "No photo metadata.");
-            return;
-        }
-        final PhotoMetadata photoMetadata = metadata.get(0);
-        if (photoMetadata == null){
-            Log.i(TAG, "photoMetaData doesn't exist");
-        }
-        // Get the attribution text.
-        final String attributions = photoMetadata.getAttributions();
-
-        // Create a FetchPhotoRequest.
-        final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-                .setMaxWidth(IMAGE_MAX_WIDTH) // Optional.
-                .setMaxHeight(IMAGE_MAX_HEIGHT) // Optional.
-                .build();
-        placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
-            Bitmap imageBitmap = fetchPhotoResponse.getBitmap();
-            //save image to file
-            Log.i(TAG, "GOT BITMAP");
-            try {
-                mDestinationPhotoFile = persistImage(imageBitmap, mDestinationPhotoFileName);
-                if (mDestinationPhotoFile == null){
-                    Log.e(TAG, "DestinationPhotoFile is EMPTY");
-                } else {
-                    final ParseFile newDestinationPhoto = new ParseFile(mDestinationPhotoFile);
-                    Log.i(TAG, "NEWDESTINATIONPHOTO: " + newDestinationPhoto.getName());
-                    newDestinationPhoto.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null){
-                                //update destination image
-                                destination.put("image", newDestinationPhoto);
-                            }
-                        }
-                    });
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //imageView.setImageBitmap(bitmap);
-        }).addOnFailureListener((exception) -> {
-            if (exception instanceof ApiException) {
-                final ApiException apiException = (ApiException) exception;
-                Log.e(TAG, "Place not found: " + exception.getMessage());
-                final int statusCode = apiException.getStatusCode();
-                // TODO: Handle error with given status code.
-            }
-        });
-        /*
-        newDestinationPhoto.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null){
-                    //update destination image
-                    destination.setImage(newDestinationPhoto);
-                }
-            }
-        });
-         */
-    }
-
     private void saveDestination(Place place, ParseUser currentUser) {
         Destination destination = new Destination();
-        savePhoto(destination);
-        Log.i(TAG, "Image File: " + destination.getImage().getName());
+        setPhoto(destination);
         destination.setName(place.getName());
         destination.setDescription(place.getAddress());
         if (place.getLatLng() != null) {
@@ -245,21 +178,53 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private File persistImage(Bitmap bitMap, String fileName) throws IOException{
-        // Create a File reference for future access
-        File photoFile = new File(this.getCacheDir(), fileName);
-        photoFile.createNewFile();//getPhotoFileUri(fileName);
+    private void setPhoto(Destination destination){
+        // Get the photo metadata.
+        final List<PhotoMetadata> metadata = place.getPhotoMetadatas();
+        if (metadata == null || metadata.isEmpty()) {
+            Log.w(TAG, "No photo metadata.");
+            return;
+        }
+        final PhotoMetadata photoMetadata = metadata.get(0);
 
-        // Configure byte output stream
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitMap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+        // Get the attribution text.
+        final String attributions = photoMetadata.getAttributions();
 
-        FileOutputStream fos = new FileOutputStream(photoFile);
-        // Write the bytes of the bitmap to file
-        fos.write(bytes.toByteArray());
-        fos.flush();
-        fos.close();
-        Log.i(TAG, "NEW FILE: " + photoFile.getName());
-        return photoFile;
+        // Create a FetchPhotoRequest.
+        final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
+                //.setMaxWidth(IMAGE_MAX_WIDTH)
+                //.setMaxHeight(IMAGE_MAX_HEIGHT)
+                .build();
+        placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
+            Bitmap bitmap = fetchPhotoResponse.getBitmap();
+            if (bitmap == null){
+                Log.e(TAG, "Bitmap is NULL");
+            } else {
+                mDestinationPhotoFile = convertBitmapToParsefile(bitmap, mDestinationPhotoFileName);
+                Log.i(TAG, "Photo File STATUS: " + mDestinationPhotoFile.isDataAvailable());
+                destination.setImage(mDestinationPhotoFile);
+                destination.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.e(TAG, "Photo saved in Destination", e);
+                    }
+                });
+            }
+        }).addOnFailureListener((exception) -> {
+            if (exception instanceof ApiException) {
+                final ApiException apiException = (ApiException) exception;
+                Log.e(TAG, "Place not found: " + exception.getMessage());
+                final int statusCode = apiException.getStatusCode();
+                // TODO: Handle error with given status code.
+            }
+        });
+    }
+
+    public ParseFile convertBitmapToParsefile(Bitmap bitMap, String fileName){
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitMap.compress(Bitmap.CompressFormat.JPEG,100,bos);
+        byte[] imageByte = bos.toByteArray();
+        ParseFile parseFile = new ParseFile(fileName,imageByte);
+        return parseFile;
     }
 }

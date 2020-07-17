@@ -31,6 +31,11 @@ import java.io.File;
 
 import static com.example.takeoff.R.*;
 
+/** SignUpActivity contains:
+ * - username, password text fields
+ * - button to create profile picture
+ * - user can create account that saves user onto Parse server
+ */
 public class SignupActivity extends AppCompatActivity {
 
     public static final String TAG = "SignupActivity";

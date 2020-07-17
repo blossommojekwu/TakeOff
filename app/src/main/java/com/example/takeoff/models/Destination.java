@@ -7,7 +7,9 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 @ParseClassName("Destination")
-//TODO: Add javadoc for destination class objects
+/** Destination:
+ * - class for destination data derived from Google AutoComplete SDK
+ */
 public class Destination extends ParseObject{
 
     public static final String KEY_NAME = "name";

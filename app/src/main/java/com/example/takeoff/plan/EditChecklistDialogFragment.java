@@ -12,8 +12,16 @@ import androidx.fragment.app.DialogFragment;
 import com.example.takeoff.R;
 import com.google.android.material.button.MaterialButton;
 
+/**
+ * EditChecklistDialogFragment contains:
+ * - DialogFragment launched when checklist item is clicked
+ * - Edit Text to receive input text
+ * - Save Button to set input text as new changed checklist item
+ */
+
 public class EditChecklistDialogFragment extends DialogFragment {
 
+    public static final String titleName = "title";
     private EditText mEditChecklistText;
     private MaterialButton mBtnSave;
 
@@ -24,7 +32,7 @@ public class EditChecklistDialogFragment extends DialogFragment {
     public static EditChecklistDialogFragment newInstance(String title) {
         EditChecklistDialogFragment frag = new EditChecklistDialogFragment();
         Bundle args = new Bundle();
-        args.putString("title", title);
+        args.putString(titleName, title);
         frag.setArguments(args);
         return frag;
     }
@@ -42,7 +50,7 @@ public class EditChecklistDialogFragment extends DialogFragment {
         mEditChecklistText = (EditText) view.findViewById(R.id.etChecklistItem);
         mBtnSave = view.findViewById(R.id.btnSave);
         // Fetch arguments from bundle and set title
-        String title = getArguments().getString("title", "Enter Plan");
+        String title = getArguments().getString(titleName, "Enter Plan");
         getDialog().setTitle(title);
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.95);
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.95);
