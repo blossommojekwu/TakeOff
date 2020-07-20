@@ -59,24 +59,43 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvDestinationName;
-        ImageView ivDestinationImage;
-        TextView tvDestionationDescription;
+        private TextView mTvDestinationName;
+        private ImageView mIvDestinationImage;
+        private TextView mTvDestinationAddress;
+        private TextView mTvDestinationType1;
+        private TextView mTvDestinationType2;
+        private TextView mTvDestinationWebsite;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvDestinationName = itemView.findViewById(R.id.tvDestinationName);
-            ivDestinationImage = itemView.findViewById(R.id.ivDestinationImage);
-            tvDestionationDescription = itemView.findViewById(R.id.tvDestinationDescription);
+            mTvDestinationName = itemView.findViewById(R.id.tvDestinationName);
+            mIvDestinationImage = itemView.findViewById(R.id.ivDestinationImage);
+            mTvDestinationAddress = itemView.findViewById(R.id.tvDestinationAddress);
+            mTvDestinationType1 = itemView.findViewById(R.id.tvDestinationType1);
+            mTvDestinationType2 = itemView.findViewById(R.id.tvDestinationType2);
+            mTvDestinationWebsite = itemView.findViewById(R.id.tvDestinationWebsite);
         }
 
         public void bind(Destination destination) {
             //Bind the post data to the view elements
-            tvDestinationName.setText(destination.getName());
-            tvDestionationDescription.setText(destination.getDescription());
+            mTvDestinationName.setText(destination.getName());
+            mTvDestinationAddress.setText(destination.getDescription());
+            mTvDestinationType1.setVisibility(View.GONE);
+            mTvDestinationType2.setVisibility(View.GONE);
             ParseFile image = destination.getImage();
             if (image != null) {
-                Glide.with(mContext).load(image.getUrl()).into(ivDestinationImage);
+                Glide.with(mContext).load(image.getUrl()).into(mIvDestinationImage);
+            }
+            if (destination.getTypes() != null){
+                mTvDestinationType1.setVisibility(View.VISIBLE);
+                mTvDestinationType1.setText(destination.getTypes().get(0));
+                if (destination.getTypes().size() > 1) {
+                    mTvDestinationType2.setVisibility(View.VISIBLE);
+                    mTvDestinationType2.setText(destination.getTypes().get(1));
+                }
+            }
+            if (destination.getWebsite() != null){
+                mTvDestinationWebsite.setText(destination.getWebsite());
             }
         }
     }

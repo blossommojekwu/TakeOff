@@ -2,12 +2,18 @@
 <resources>
     <dimen name="marginTiny">5dp</dimen>
     <dimen name="marginSmall">10dp</dimen>
+    <dimen name="marginSmMed">25dp</dimen>
     <dimen name="marginMedium">50dp</dimen>
     <dimen name="marginLarge">70dp</dimen>
+    <dimen name="imageSmall">100dp</dimen>
+    <dimen name="imageSmMed">150dp</dimen>
     <dimen name="imageMedium">200dp</dimen>
     <dimen name="imageLarge">300dp</dimen>
     <dimen name="card_corner_radius">10dp</dimen>
     <dimen name="dividerHeight">2dp</dimen>
     <dimen name="textWidth">300dp</dimen>
     <dimen name="btnSize">50dp</dimen>
+    <dimen name="ratingWidth">100dp</dimen>
+    <dimen name="ratingHeight">30dp</dimen>
+    <dimen name="marginMicro">2dp</dimen>
 </resources>

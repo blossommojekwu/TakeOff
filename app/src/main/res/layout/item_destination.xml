@@ -5,7 +5,7 @@
     android:id="@+id/cvDestination"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/marginSmall"
+    android:layout_margin="@dimen/marginTiny"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
     <LinearLayout
@@ -18,24 +18,76 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/montserrat"
             android:text="Paris"
             android:textColor="@color/colorBlack"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/ivDestinationImage"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/imageLarge"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvDestinationDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Paris, France's capital, is a major European city and a global center for art, fashion, gastronomy and culture. Its 19th-century cityscape is crisscrossed by wide boulevards and the River Seine. Beyond such landmarks as the Eiffel Tower and the 12th-century, Gothic Notre-Dame cathedral, the city is known for its cafe culture and designer boutiques along the Rue du Faubourg Saint-Honoré."
-            android:textColor="@color/colorBlack"
-            android:textSize="24sp" />
+            <ImageView
+                android:id="@+id/ivDestinationImage"
+                android:layout_width="@dimen/imageSmMed"
+                android:layout_height="@dimen/imageSmMed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
+            <TextView
+                android:id="@+id/tvDestinationAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/marginTiny"
+                android:fontFamily="@font/montserrat"
+                android:text="Paris, France"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/ivDestinationImage"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvDestinationType1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/marginTiny"
+                android:layout_marginTop="1dp"
+                android:background="@color/colorPurpleGray"
+                android:fontFamily="@font/montserrat"
+                android:text="TextView"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/ivDestinationImage"
+                app:layout_constraintTop_toBottomOf="@+id/tvDestinationAddress" />
+
+            <TextView
+                android:id="@+id/tvDestinationType2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/marginTiny"
+                android:background="@color/colorPurpleGray"
+                android:fontFamily="@font/montserrat"
+                android:text="TextView"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/tvDestinationType1"
+                app:layout_constraintTop_toTopOf="@+id/tvDestinationType1" />
+
+            <TextView
+                android:id="@+id/tvDestinationWebsite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:linksClickable="true"
+                android:layout_marginStart="@dimen/marginTiny"
+                android:layout_marginTop="@dimen/marginSmMed"
+                android:fontFamily="@font/montserrat"
+                android:text="Website not available"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/ivDestinationImage"
+                app:layout_constraintTop_toBottomOf="@+id/tvDestinationType1" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

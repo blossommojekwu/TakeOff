@@ -6,6 +6,8 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.List;
+
 @ParseClassName("Destination")
 /** Destination:
  * - class for destination data derived from Google AutoComplete SDK
@@ -17,8 +19,13 @@ public class Destination extends ParseObject{
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
     public static final String KEY_LOCATION = "location";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_TYPES = "types";
+    public static final String KEY_WEBSITE = "websiteURI";
+    public static final String KEY_RATING = "rating";
+    public static final String KEY_PRICE_LEVEL = "priceLevel";
 
-    public  String getName(){
+    public String getName(){
         return getString(KEY_NAME);
     }
 
@@ -55,5 +62,45 @@ public class Destination extends ParseObject{
 
     public void setLocation(ParseGeoPoint parseGeoPoint) {
         put(KEY_LOCATION, parseGeoPoint);
+    }
+
+    public String getAddress(){
+        return getString(KEY_ADDRESS);
+    }
+
+    public void setAddress(String address){
+        put(KEY_ADDRESS, address);
+    }
+
+    public List<String> getTypes(){
+        return getList(KEY_TYPES);
+    }
+
+    public void setTypes(List<String> types){
+        put(KEY_TYPES, types);
+    }
+
+    public String getWebsite() {
+        return getString(KEY_WEBSITE);
+    }
+
+    public void setWebsite(String website){
+        put(KEY_WEBSITE, website);
+    }
+
+    public double getRating(){
+        return getDouble(KEY_RATING);
+    }
+
+    public void setRating(double rating){
+        put(KEY_RATING, rating);
+    }
+
+    public int getPriceLevel(){
+        return getInt(KEY_PRICE_LEVEL);
+    }
+
+    public void setPriceLevel(int priceLevel){
+        put(KEY_PRICE_LEVEL, priceLevel);
     }
 }

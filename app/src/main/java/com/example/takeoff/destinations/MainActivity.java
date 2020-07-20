@@ -38,6 +38,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -122,7 +123,8 @@ public class MainActivity extends AppCompatActivity {
     public void onSearchCalled() {
         // Set the fields to specify which types of place data to
         // return after the user has made a selection.
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.PHOTO_METADATAS, Place.Field.TYPES);
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG,
+                Place.Field.PHOTO_METADATAS, Place.Field.TYPES, Place.Field.WEBSITE_URI, Place.Field.RATING, Place.Field.PRICE_LEVEL);
         // Start the autocomplete intent.
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                 .build(this);
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         setPhoto(destination);
         destination.setName(place.getName());
         destination.setDescription(place.getAddress());
+        destination.setAddress(place.getAddress());
         if (place.getLatLng() != null) {
             ParseGeoPoint location = new ParseGeoPoint();
             location.setLatitude(place.getLatLng().latitude);
@@ -162,6 +165,15 @@ public class MainActivity extends AppCompatActivity {
             destination.setLocation(location);
         }
         destination.setUser(currentUser);
+        List<String> types = new ArrayList<>();
+        for (Place.Type type : place.getTypes()){
+            System.out.println("Type: " + type.toString());
+            types.add(type.toString());
+        }
+        destination.setTypes(types);
+        if (place.getRating() != null) destination.setRating(place.getRating());
+        if (place.getPriceLevel() != null) destination.setPriceLevel(place.getPriceLevel());
+        if (place.getWebsiteUri() != null) destination.setWebsite(place.getWebsiteUri().toString());
         destination.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -209,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
                 final ApiException apiException = (ApiException) exception;
                 Log.e(TAG, "Place not found: " + exception.getMessage());
                 final int statusCode = apiException.getStatusCode();
-                // TODO: Handle error with given status code.
             }
         });
     }
