@@ -42,12 +42,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/* MainActivity contains:
-* - bottom navigation view that switches to different fragments based on menu icons
-* - search icon that launches Google Places autocomplete activity and returns destination clicked on
-*   to parse server
+/**
+ * MainActivity contains:
+ * - bottom navigation view that switches to different fragments based on menu icons
+ * - search icon that launches Google Places autocomplete activity and returns destination clicked on to parse server
 */
-
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
@@ -105,11 +104,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.actionPlan: fragment = new PlanFragment();
                         Toast.makeText(MainActivity.this, R.string.plan, Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.actionStay:
+                    case R.id.actionStay: fragment = new DestinationsFragment();
                         Toast.makeText(MainActivity.this, R.string.stay, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionVisit:
-                    default:
+                    default: fragment = new DestinationsFragment();
                         Toast.makeText(MainActivity.this, R.string.visit, Toast.LENGTH_SHORT).show();
                         break;
                 }

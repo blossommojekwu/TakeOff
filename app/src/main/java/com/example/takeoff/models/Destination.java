@@ -6,8 +6,11 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
 import java.util.List;
 
+@Parcel(Parcel.Serialization.BEAN)
 @ParseClassName("Destination")
 /** Destination:
  * - class for destination data derived from Google AutoComplete SDK
@@ -24,6 +27,10 @@ public class Destination extends ParseObject{
     public static final String KEY_WEBSITE = "websiteURI";
     public static final String KEY_RATING = "rating";
     public static final String KEY_PRICE_LEVEL = "priceLevel";
+
+    // empty constructor needed by the Parceler library
+    public Destination() {
+    }
 
     public String getName(){
         return getString(KEY_NAME);

@@ -30,13 +30,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.SignupActivity">
-        </activity>
-        <activity android:name=".destinations.MainActivity">
-        </activity>
+        <activity android:name=".login.SignupActivity"></activity>
+        <activity android:name=".destinations.MainActivity"></activity>
+        <activity android:name=".destinations.DestinationMapActivity"></activity>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_places_api_key"/>
     </application>
 
 </manifest>

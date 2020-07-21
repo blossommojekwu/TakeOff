@@ -36,11 +36,10 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 * user can create an account
 * user can add destination
 * user can view map location of destination
-* user can read description about destination
+* user can read info about destination
 * user can add friends
 * user can create checklist for planning
 * user can upload an image
-* user can like an image
 * user can use a calender
 * user can view options of places to stay
 * user can create list of places to visit
@@ -49,7 +48,6 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 
 * user can add a comment to a photo
 * user can include geotag to photo
-* user can tap a photo to view a more detailed photo screen with comments
 * user can share images 
 * user can see notifications when their photo is liked or if allowed group added to list
 
@@ -67,7 +65,6 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 * Destination Details Page
     * user can view a map location of the destination
     * user can view an image location of the destination
-    * user can read description about destination
 * Plan Page
     * user can use calendar to select dates
     * Optional: user can ccollapse calender once dates are selected + update when clicked on/hover
