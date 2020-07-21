@@ -20,6 +20,7 @@ import com.example.takeoff.R;
 import com.example.takeoff.databinding.ActivityMainBinding;
 import com.example.takeoff.models.Destination;
 import com.example.takeoff.plan.PlanFragment;
+import com.example.takeoff.stay.StayFragment;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.actionPlan: fragment = new PlanFragment();
                         Toast.makeText(MainActivity.this, R.string.plan, Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.actionStay: fragment = new DestinationsFragment();
+                    case R.id.actionStay: fragment = new StayFragment();
                         Toast.makeText(MainActivity.this, R.string.stay, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionVisit:
@@ -166,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
         destination.setUser(currentUser);
         List<String> types = new ArrayList<>();
         for (Place.Type type : place.getTypes()){
-            System.out.println("Type: " + type.toString());
             types.add(type.toString());
         }
         destination.setTypes(types);

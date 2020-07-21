@@ -10,11 +10,12 @@ import org.parceler.Parcel;
 
 import java.util.List;
 
-@Parcel(Parcel.Serialization.BEAN)
-@ParseClassName("Destination")
-/** Destination:
+/**
+ * Destination:
  * - class for destination data derived from Google AutoComplete SDK
  */
+@Parcel(Parcel.Serialization.BEAN)
+@ParseClassName("Destination")
 public class Destination extends ParseObject{
 
     public static final String KEY_NAME = "name";
@@ -55,6 +56,7 @@ public class Destination extends ParseObject{
     public void setImage(ParseFile parseFile) {
         put(KEY_IMAGE, parseFile);
     }
+
     public ParseUser getUser() {
         return getParseUser(KEY_USER);
     }
