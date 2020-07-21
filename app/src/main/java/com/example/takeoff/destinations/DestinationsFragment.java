@@ -22,12 +22,12 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-/** DestinationsFragment contains:
+/**
+ * DestinationsFragment contains:
  * - creation of layout for each row in recyclerview
  * - sets adapter and layout manager on recyclerview to populate feed
  * - pull to refresh feed feature
  */
-
 public class DestinationsFragment extends Fragment {
 
     public static final String TAG = "DestinationsFragment";

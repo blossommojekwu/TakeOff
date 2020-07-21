@@ -1,6 +1,7 @@
 package com.example.takeoff.destinations;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import com.example.takeoff.R;
 import com.example.takeoff.models.Destination;
 import com.parse.ParseFile;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
-/** DestinationsAdapter:
+/**
+ * DestinationsAdapter:
  * - displays data from Destination model to row(item_destination cardview) in Recycler View
  */
-
 public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapter.ViewHolder> {
 
     public static final String TAG = "DestinationsAdapter";
@@ -57,7 +60,7 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
         return mDestinations.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTvDestinationName;
         private ImageView mIvDestinationImage;
@@ -74,6 +77,25 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
             mTvDestinationType1 = itemView.findViewById(R.id.tvDestinationType1);
             mTvDestinationType2 = itemView.findViewById(R.id.tvDestinationType2);
             mTvDestinationWebsite = itemView.findViewById(R.id.tvDestinationWebsite);
+            itemView.setOnClickListener(this);
+        }
+
+        //when the user clicks on a row, show DestinationDetailsActivity for the selected destination
+        @Override
+        public void onClick(View view) {
+            //get destination position
+            int position = getAdapterPosition();
+            //position must be valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION){
+                //get destination at position
+                Destination destination = mDestinations.get(position);
+                //create intent for new activity
+                Intent intent = new Intent(mContext, DestinationMapActivity.class);
+                //serialize destination using parceler w/ short name as key
+                intent.putExtra(Destination.class.getSimpleName(), Parcels.wrap(destination));
+                //show the activity
+                mContext.startActivity(intent);
+            }
         }
 
         public void bind(Destination destination) {
