@@ -13,6 +13,7 @@
     <string name="login_new_user">Login New User</string>
     <string name="signup_error">Error while signing up</string>
     <string name="saving_error">Error while saving</string>
+    <string name="picture_not_taken">Picture wasn\'t taken!</string>
 
     <!-- Bottom Navigation Toast Messages -->
     <string name="home">HOME</string>

@@ -2,23 +2,29 @@ package com.example.takeoff.destinations;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.takeoff.R;
 import com.example.takeoff.databinding.ActivityMainBinding;
 import com.example.takeoff.models.Destination;
+import com.example.takeoff.models.Hotel;
 import com.example.takeoff.plan.PlanFragment;
 import com.example.takeoff.stay.StayFragment;
 import com.google.android.gms.common.api.ApiException;
@@ -38,10 +44,18 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.Headers;
+
+import static com.example.takeoff.R.string.google_places_api_key;
 
 /**
  * MainActivity contains:
@@ -51,13 +65,21 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
+    public static final String SEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+    public static final String DETAIL_BASE_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
+    private static final String PHOTO_BASE_URL = "https://maps.googleapis.com/maps/api/place/photo?";
+    private static final String MAX_WIDTH = "300";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     PlacesClient placesClient;
     Place place;
+    private List<Hotel> mHotels;
+    private List<String> mPlaceIds;
     private BottomNavigationView mButtomNavigation;
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private ParseFile mDestinationPhotoFile;
     private String mDestinationPhotoFileName = "destination_photo.jpg";
+
+    ImageView ivPhoto;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityMainBinding mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         // layout of activity is stored in a special property called root
+        ivPhoto = mainBinding.ivPhoto;
         View mainView = mainBinding.getRoot();
         setContentView(mainView);
 
@@ -92,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
         // Create a new PlacesClient instance
         placesClient = Places.createClient(this);
 
+        mHotels = new ArrayList<>();
+        mPlaceIds = new ArrayList<>();
         mButtomNavigation = mainBinding.bottomNavigation;
 
         mButtomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -131,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
@@ -152,6 +178,82 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //creates list of place_ids for hotels near destination
+    //Example request: https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=lodging&key=API_KEY
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void searchNetworkRequest(Destination destination){
+        AsyncHttpClient placesSearchClient = new AsyncHttpClient();
+        String lat = String.valueOf(destination.getLocation().getLatitude());
+        String lng = String.valueOf(destination.getLocation().getLongitude());
+        String latLng = lat + "," + lng;
+        List<String> endpoints = new ArrayList<>();
+        endpoints.add("location=" + latLng);
+        endpoints.add("radius=" + String.valueOf(16000));
+        endpoints.add("type=" + "lodging");
+        endpoints.add("key="+ getString(R.string.google_places_api_key));
+        final String HOTEL_URL = SEARCH_BASE_URL + String.join("&", endpoints);
+        Log.i(TAG, "HOTEL URL: " + HOTEL_URL);
+        placesSearchClient.get(HOTEL_URL, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d(TAG, "Hotel Search onSuccess");
+                JSONObject jsonObject = json.jsonObject;
+                try{
+                    JSONArray results = jsonObject.getJSONArray("results");
+                    Log.i(TAG, "Results: " + results.toString());
+                    mPlaceIds.addAll(Hotel.placeIdFromJSONArray(results));
+                    //send Google Places Details request to get hotel details
+                    detailsNetworkRequest(mPlaceIds);
+                } catch (JSONException e) {
+                    Log.e(TAG, "Hit JSON Exception", e);
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.d(TAG, "Hotel Search onFailure");
+            }
+        });
+    }
+
+    //uses populated list of place ids to issue network request for hotel details
+    //Example request: https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJaQfLwlQrDogRg4iiPfEl1J4&key=API_KEY
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void detailsNetworkRequest(List<String> placeIds){
+        AsyncHttpClient placesDetailsClient = new AsyncHttpClient();
+        List<String> endpoints = new ArrayList<>();
+        for (int i = 0; i < placeIds.size(); i++) {
+            endpoints.add("place_id=" + placeIds.get(i));
+            endpoints.add("key="+ getString(R.string.google_places_api_key));
+            final String HOTEL_DETAILS_URL = DETAIL_BASE_URL + String.join("&", endpoints);
+            placesDetailsClient.get(HOTEL_DETAILS_URL, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    Log.d(TAG, "Hotel Details onSuccess");
+                    JSONObject jsonObject = json.jsonObject;
+                    try {
+                        JSONObject result = jsonObject.getJSONObject("result");
+                        Log.i(TAG, "Result: " + result.toString());
+                        String photoReference = Hotel.getPhotoReference(result);
+                        String HOTEL_PHOTO_URL = PHOTO_BASE_URL + "maxwidth=" + MAX_WIDTH + "&photoreference="
+                                + photoReference + "&key=" + getString(google_places_api_key);
+                        Hotel hotel = new Hotel(result);
+                        hotel.setPhotoURL(HOTEL_PHOTO_URL);
+                        mHotels.add(hotel);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Log.d(TAG, "Hotel Details onFailure");
+                }
+            });
+            //clear out endpoints for new placeId
+            endpoints.clear();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void saveDestination(Place place, ParseUser currentUser) {
         Destination destination = new Destination();
         setPhoto(destination);
@@ -183,6 +285,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "Post save was successful!");
             }
         });
+        //Send Network Request for Hotel info
+        searchNetworkRequest(destination);
     }
 
     private void setPhoto(Destination destination){
