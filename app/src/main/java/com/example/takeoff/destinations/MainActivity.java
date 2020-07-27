@@ -22,6 +22,7 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.takeoff.R;
 import com.example.takeoff.databinding.ActivityMainBinding;
+import com.example.takeoff.map.DestinationMapFragment;
 import com.example.takeoff.models.Destination;
 import com.example.takeoff.models.Hotel;
 import com.example.takeoff.plan.PlanFragment;
@@ -127,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.actionPlan: fragment = new PlanFragment();
                         Toast.makeText(MainActivity.this, R.string.plan, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.actionMap: fragment = new DestinationMapFragment();
+                        Toast.makeText(MainActivity.this, R.string.map, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionStay: fragment = new StayFragment();
                         Toast.makeText(MainActivity.this, R.string.stay, Toast.LENGTH_SHORT).show();

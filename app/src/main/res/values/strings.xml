@@ -28,4 +28,5 @@
     <string name="plan_to">"Plan to: "</string>
     <string name="checklist_change">"Change of Plans"</string>
     <string name="checklist_remove">Won\'t Be Doing That Anymore</string>
+    <string name="map">MAP</string>
 </resources>
