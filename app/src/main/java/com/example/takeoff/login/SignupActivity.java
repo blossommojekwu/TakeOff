@@ -165,7 +165,7 @@ public class SignupActivity extends AppCompatActivity {
                 // Load the taken image into a preview
                 mIvProfilePic.setImageBitmap(takenImage);
             } else { // Result was a failure
-                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.picture_not_taken, Toast.LENGTH_SHORT).show();
             }
         }
     }

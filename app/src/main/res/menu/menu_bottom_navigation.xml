@@ -13,6 +13,11 @@
         android:title="Plan"
         app:showAsAction="always" />
     <item
+        android:id="@+id/actionMap"
+        android:icon="@drawable/ic_globe_black"
+        android:title="Map"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/actionStay"
         android:icon="@drawable/ic_hotel_white"
         android:title="Stay"
