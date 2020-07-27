@@ -2,20 +2,68 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cvHotel"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:layout_editor_absoluteX="1dp"
-    tools:layout_editor_absoluteY="92dp">
+    android:layout_margin="@dimen/marginTiny"
+    app:cardCornerRadius="@dimen/card_corner_radius">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/paddingSmall">
+
+        <TextView
+            android:id="@+id/tvHotelName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_horizontal"
+            android:text="Hotel Name"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp" />
 
         <ImageView
-            android:layout_width="@dimen/imageSmMed"
-            android:layout_height="@dimen/imageSmMed"
-            tools:srcCompat="@tools:sample/backgrounds/scenic"/>
+            android:id="@+id/ivHotelImage"
+            android:layout_width="@dimen/imageMedium"
+            android:layout_height="@dimen/imageMedium"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/tvHotelAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:text="123 Main Street"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/tvHotelWebsite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:linksClickable="true"
+            android:fontFamily="@font/montserrat"
+            android:text="No website available"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/tvHotelPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:text="800-000-0000"
+            android:textColor="@color/colorBlack" />
+
+        <RatingBar
+            android:id="@+id/ratingBarHotel"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="5"
+            android:numStars="5"
+            android:stepSize="0.1" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

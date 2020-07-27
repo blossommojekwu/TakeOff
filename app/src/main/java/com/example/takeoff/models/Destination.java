@@ -5,7 +5,6 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-
 import org.parceler.Parcel;
 
 import java.util.List;

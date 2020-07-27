@@ -16,4 +16,5 @@
     <dimen name="ratingWidth">100dp</dimen>
     <dimen name="ratingHeight">30dp</dimen>
     <dimen name="marginMicro">2dp</dimen>
+    <dimen name="paddingSmall">5dp</dimen>
 </resources>

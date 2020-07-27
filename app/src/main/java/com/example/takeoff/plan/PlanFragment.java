@@ -87,7 +87,7 @@ public class PlanFragment extends Fragment implements EditChecklistDialogFragmen
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
             @Override
             public void onPositiveButtonClick(Object selection) {
-                mTvSelectedDates.setText("Selected Dates: " + materialDatePicker.getHeaderText());
+                mTvSelectedDates.setText(getString(R.string.selected_dates, materialDatePicker.getHeaderText()));
             }
         });
 

@@ -65,6 +65,7 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
         private TextView mTvDestinationName;
         private ImageView mIvDestinationImage;
         private TextView mTvDestinationAddress;
+        //limited destination types to top 2 for better screen fit and importance
         private TextView mTvDestinationType1;
         private TextView mTvDestinationType2;
         private TextView mTvDestinationWebsite;

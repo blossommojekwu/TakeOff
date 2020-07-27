@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -41,6 +40,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -61,6 +61,8 @@ import static com.example.takeoff.R.string.google_places_api_key;
  * MainActivity contains:
  * - bottom navigation view that switches to different fragments based on menu icons
  * - search icon that launches Google Places autocomplete activity and returns destination clicked on to parse server
+ * - ability to save Destination in parse server to populate feed of destinations
+ * - ability to save Hotels nearby destination from saved destination
 */
 public class MainActivity extends AppCompatActivity {
 
@@ -68,18 +70,16 @@ public class MainActivity extends AppCompatActivity {
     public static final String SEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     public static final String DETAIL_BASE_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
     private static final String PHOTO_BASE_URL = "https://maps.googleapis.com/maps/api/place/photo?";
+    public static final int SEARCH_RADIUS = 5000; //in meters
     private static final String MAX_WIDTH = "300";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
-    PlacesClient placesClient;
-    Place place;
-    private List<Hotel> mHotels;
+    private PlacesClient mPlacesClient;
+    private Place mPlace;
     private List<String> mPlaceIds;
     private BottomNavigationView mButtomNavigation;
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private ParseFile mDestinationPhotoFile;
     private String mDestinationPhotoFileName = "destination_photo.jpg";
-
-    ImageView ivPhoto;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityMainBinding mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         // layout of activity is stored in a special property called root
-        ivPhoto = mainBinding.ivPhoto;
         View mainView = mainBinding.getRoot();
         setContentView(mainView);
 
@@ -113,9 +112,8 @@ public class MainActivity extends AppCompatActivity {
             Places.initialize(getApplicationContext(), getString(R.string.google_places_api_key));
         }
         // Create a new PlacesClient instance
-        placesClient = Places.createClient(this);
+        mPlacesClient = Places.createClient(this);
 
-        mHotels = new ArrayList<>();
         mPlaceIds = new ArrayList<>();
         mButtomNavigation = mainBinding.bottomNavigation;
 
@@ -161,15 +159,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                place = Autocomplete.getPlaceFromIntent(data);
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+                mPlace = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + mPlace.getName() + ", " + mPlace.getId() + ", " + mPlace.getLatLng());
                 //saveDestination using place
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                saveDestination(place, currentUser);
+                saveDestination(mPlace, currentUser);
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
                 Status status = Autocomplete.getStatusFromIntent(data);
-                Log.i(TAG, status.getStatusMessage());
+                Log.e(TAG, status.getStatusMessage());
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
@@ -188,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         String latLng = lat + "," + lng;
         List<String> endpoints = new ArrayList<>();
         endpoints.add("location=" + latLng);
-        endpoints.add("radius=" + String.valueOf(16000));
+        endpoints.add("radius=" + String.valueOf(SEARCH_RADIUS));
         endpoints.add("type=" + "lodging");
         endpoints.add("key="+ getString(R.string.google_places_api_key));
         final String HOTEL_URL = SEARCH_BASE_URL + String.join("&", endpoints);
@@ -203,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, "Results: " + results.toString());
                     mPlaceIds.addAll(Hotel.placeIdFromJSONArray(results));
                     //send Google Places Details request to get hotel details
-                    detailsNetworkRequest(mPlaceIds);
+                    detailsNetworkRequest(mPlaceIds, destination);
                 } catch (JSONException e) {
                     Log.e(TAG, "Hit JSON Exception", e);
                 }
@@ -215,10 +212,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //uses populated list of place ids to issue network request for hotel details
+    //uses populated list of place ids to issue network request for hotel details for each place_id
     //Example request: https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJaQfLwlQrDogRg4iiPfEl1J4&key=API_KEY
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void detailsNetworkRequest(List<String> placeIds){
+    public void detailsNetworkRequest(List<String> placeIds, Destination destination){
         AsyncHttpClient placesDetailsClient = new AsyncHttpClient();
         List<String> endpoints = new ArrayList<>();
         for (int i = 0; i < placeIds.size(); i++) {
@@ -233,12 +230,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONObject result = jsonObject.getJSONObject("result");
                         Log.i(TAG, "Result: " + result.toString());
-                        String photoReference = Hotel.getPhotoReference(result);
-                        String HOTEL_PHOTO_URL = PHOTO_BASE_URL + "maxwidth=" + MAX_WIDTH + "&photoreference="
-                                + photoReference + "&key=" + getString(google_places_api_key);
-                        Hotel hotel = new Hotel(result);
-                        hotel.setPhotoURL(HOTEL_PHOTO_URL);
-                        mHotels.add(hotel);
+                        saveHotel(result, destination);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -251,6 +243,39 @@ public class MainActivity extends AppCompatActivity {
             //clear out endpoints for new placeId
             endpoints.clear();
         }
+    }
+
+    private void saveHotel(JSONObject jsonObject, ParseObject destination) throws JSONException {
+        Hotel hotel = new Hotel();
+        hotel.setDestination(destination);
+        hotel.setPlaceId(jsonObject.getString("place_id"));
+        hotel.setName(jsonObject.getString("name"));
+        hotel.setAddress(jsonObject.getString("formatted_address"));
+        hotel.setWebsite(jsonObject.getString("website"));
+        hotel.setPhoneNumber(jsonObject.getString("formatted_phone_number"));
+        if (jsonObject.has("rating")){
+            hotel.setRating(jsonObject.getDouble("rating"));
+        }
+        String photoReference = jsonObject.getJSONArray("photos").getJSONObject(0).getString("photo_reference");
+        String HOTEL_PHOTO_URL = PHOTO_BASE_URL + "maxwidth=" + MAX_WIDTH + "&photoreference="
+                + photoReference + "&key=" + getString(google_places_api_key);
+        hotel.setImageURL(HOTEL_PHOTO_URL);
+        double lat = jsonObject.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+        double lng = jsonObject.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+        ParseGeoPoint location = new ParseGeoPoint();
+        location.setLatitude(lat);
+        location.setLongitude(lng);
+        hotel.setLocation(location);
+        hotel.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving", e);
+                    Toast.makeText(MainActivity.this, R.string.saving_error, Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Post save was successful!");
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -282,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, "Error while saving", e);
                     Toast.makeText(MainActivity.this, R.string.saving_error, Toast.LENGTH_SHORT).show();
                 }
-                Log.i(TAG, "Post save was successful!");
+                Log.i(TAG, "Destination save was successful!");
             }
         });
         //Send Network Request for Hotel info
@@ -291,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setPhoto(Destination destination){
         // Get the photo metadata.
-        final List<PhotoMetadata> metadata = place.getPhotoMetadatas();
+        final List<PhotoMetadata> metadata = mPlace.getPhotoMetadatas();
         if (metadata == null || metadata.isEmpty()) {
             Log.w(TAG, "No photo metadata.");
             return;
@@ -304,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
         // Create a FetchPhotoRequest.
         final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
                 .build();
-        placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
+        mPlacesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
             Bitmap bitmap = fetchPhotoResponse.getBitmap();
             if (bitmap == null){
                 Log.e(TAG, "Bitmap is NULL");
