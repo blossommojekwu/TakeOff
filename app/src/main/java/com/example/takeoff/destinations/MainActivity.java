@@ -49,6 +49,7 @@ import com.parse.SaveCallback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private ParseFile mDestinationPhotoFile;
     private String mDestinationPhotoFileName = "destination_photo.jpg";
+    private Destination mCurrentDestination;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,6 +141,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.actionVisit:
                     default: fragment = new VisitPlaceFragment();
                         Toast.makeText(MainActivity.this, R.string.visit, Toast.LENGTH_SHORT).show();
+                        //pass destination data from activity to visitplacefragment
+                        if (mCurrentDestination != null){
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("current destination", Parcels.wrap(mCurrentDestination));
+                            fragment.setArguments(bundle);
+                        }
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
@@ -315,6 +323,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "Destination save was successful!");
             }
         });
+        //update current destination
+        mCurrentDestination = destination;
         //Send Network Request for Hotel info
         searchNetworkRequest(destination);
     }

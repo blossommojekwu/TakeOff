@@ -120,7 +120,7 @@ public class PlanFragment extends Fragment implements EditChecklistDialogFragmen
                showEditDialog();
            }
        };
-        mChecklistAdapter = new ChecklistAdapter(mChecklistItems, onClickListener, onLongClickListener);
+       mChecklistAdapter = new ChecklistAdapter(mChecklistItems, onClickListener, onLongClickListener);
        mRvChecklist.setAdapter(mChecklistAdapter);
        mRvChecklist.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -1,8 +1,10 @@
 package com.example.takeoff.models;
 
+import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
+@ParseClassName("VisitPlace")
 public class VisitPlace extends ParseObject {
 
     public static final String KEY_NAME = "name";
