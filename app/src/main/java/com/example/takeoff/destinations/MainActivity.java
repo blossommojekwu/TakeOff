@@ -27,6 +27,7 @@ import com.example.takeoff.models.Destination;
 import com.example.takeoff.models.Hotel;
 import com.example.takeoff.plan.PlanFragment;
 import com.example.takeoff.stay.StayFragment;
+import com.example.takeoff.visitplace.VisitPlaceFragment;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, R.string.stay, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionVisit:
-                    default: fragment = new DestinationsFragment();
+                    default: fragment = new VisitPlaceFragment();
                         Toast.makeText(MainActivity.this, R.string.visit, Toast.LENGTH_SHORT).show();
                         break;
                 }

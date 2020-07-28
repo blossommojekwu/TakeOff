@@ -5,6 +5,7 @@
     <dimen name="marginSmMed">25dp</dimen>
     <dimen name="marginMedium">50dp</dimen>
     <dimen name="marginLarge">70dp</dimen>
+    <dimen name="imageTiny">60dp</dimen>
     <dimen name="imageSmall">100dp</dimen>
     <dimen name="imageSmMed">150dp</dimen>
     <dimen name="imageMedium">200dp</dimen>
@@ -17,4 +18,6 @@
     <dimen name="ratingHeight">30dp</dimen>
     <dimen name="marginMicro">2dp</dimen>
     <dimen name="paddingSmall">5dp</dimen>
+    <dimen name="cardHeightSmall">70dp</dimen>
+    <dimen name="marginNone">0dp</dimen>
 </resources>
