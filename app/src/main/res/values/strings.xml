@@ -29,4 +29,6 @@
     <string name="checklist_change">"Change of Plans"</string>
     <string name="checklist_remove">Won\'t Be Doing That Anymore</string>
     <string name="map">MAP</string>
+    <string name="places_youll_go">Oh, the Places You\'ll Go!</string>
+    <string name="place">Place</string>
 </resources>

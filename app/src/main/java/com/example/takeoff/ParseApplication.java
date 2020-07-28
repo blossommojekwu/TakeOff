@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.takeoff.models.Destination;
 import com.example.takeoff.models.Hotel;
+import com.example.takeoff.models.VisitPlace;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -15,6 +16,7 @@ public class ParseApplication extends Application {
         //Register parse models
         ParseObject.registerSubclass(Destination.class);
         ParseObject.registerSubclass(Hotel.class);
+        ParseObject.registerSubclass(VisitPlace.class);
         // set applicationId, and server server based on the values in the Heroku settings.
         // clientKey is not needed unless explicitly configured
         // any network interceptors must be added with the Configuration Builder given this syntax
