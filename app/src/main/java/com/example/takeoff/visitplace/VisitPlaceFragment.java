@@ -7,7 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,14 +20,14 @@ import android.widget.Toast;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.takeoff.R;
-import com.example.takeoff.destinations.MainActivity;
 import com.example.takeoff.models.Destination;
 import com.example.takeoff.models.VisitPlace;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import org.json.JSONArray;
@@ -51,7 +53,8 @@ public class VisitPlaceFragment extends Fragment {
     private static final String PHOTO_BASE_URL = "https://maps.googleapis.com/maps/api/place/photo?";
     private static final String MAX_WIDTH = "300";
     private Destination mCurrentDestination;
-    private List<String> mVisitPlacesItems;
+    private SwipeRefreshLayout mVisitPlaceSwipeContainer;
+    private VisitPlacesAdapter mPlacesAdapter;
     private ExtendedFloatingActionButton mFloatingActionBtn;
     private RecyclerView mRvVisitPlaces;
     private TextInputEditText mEtVisitPlaceText;
@@ -74,10 +77,33 @@ public class VisitPlaceFragment extends Fragment {
             mCurrentDestination = (Destination) Parcels.unwrap(this.getArguments().getParcelable("current destination"));
             Log.i(TAG, "CURRENT DEST: " + mCurrentDestination.getName());
         }
-        mVisitPlacesItems = new ArrayList<>();
+        mVisitPlaceSwipeContainer = view.findViewById(R.id.visitPlaceSwipeContainer);
+        // Setup refresh listener which triggers new data loading
+        mVisitPlaceSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchFeed(0);
+            }
+        });
+        mVisitPlaceSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         mFloatingActionBtn = view.findViewById(R.id.fabAddPlace);
         mRvVisitPlaces = view.findViewById(R.id.rvVisitPlaces);
         mEtVisitPlaceText = view.findViewById(R.id.etVisitPlaceText);
+        //steps to use the recycler view
+        // 0. Create layout for one row in the list
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        // 1. create the adapter
+        // 2. create the data source
+        mVisitPlaces = new ArrayList<>();
+        mPlacesAdapter = new VisitPlacesAdapter(getContext(), mVisitPlaces);
+        // 3. set the adapter on the recycler view
+        mRvVisitPlaces.setAdapter(mPlacesAdapter);
+        // 4. set the layout manager on the recycler view
+        mRvVisitPlaces.setLayoutManager(new LinearLayoutManager(getContext()));
+        queryVisitPlace();
         mFloatingActionBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -85,9 +111,37 @@ public class VisitPlaceFragment extends Fragment {
                 Toast.makeText(getContext(), "Added Place", Toast.LENGTH_SHORT).show();
                 //save text in edit text when button is clicked
                 String placeItem = mEtVisitPlaceText.getText().toString();
-                mVisitPlacesItems.add(placeItem);
                 //issue network request call for Google Places Search to save Visit Place
                 searchVisitPlace(mCurrentDestination, placeItem);
+                //clear edit text once submitted
+                mEtVisitPlaceText.setText("");
+            }
+        });
+    }
+
+    private void fetchFeed(int i) {
+        mPlacesAdapter.clear();
+        queryVisitPlace();
+        mVisitPlaceSwipeContainer.setRefreshing(false);
+    }
+
+    private void queryVisitPlace() {
+        //Specify which class to query
+        ParseQuery<VisitPlace> query = ParseQuery.getQuery(VisitPlace.class);
+        query.addAscendingOrder(VisitPlace.KEY_CREATED_AT);
+        query.findInBackground(new FindCallback<VisitPlace>() {
+            @Override
+            public void done(List<VisitPlace> visitPlaces, ParseException e) {
+                if (e != null){
+                    Log.e(TAG, "Issue with getting hotels for destination", e);
+                    return;
+                }
+                for (VisitPlace visitPlace : visitPlaces){
+                    Log.i(TAG, "Visit Place: " + visitPlace.getName() + ", address: " + visitPlace.getAddress());
+                }
+                //update data source and notify adapter that we got new data
+                mVisitPlaces.addAll(visitPlaces);
+                mPlacesAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -96,10 +150,13 @@ public class VisitPlaceFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void searchVisitPlace(Destination destination, String placeText){
         AsyncHttpClient placesSearchClient = new AsyncHttpClient();
-        String destinationText = destination.getAddress().replaceAll(" ", "%20");
         String inputText = placeText.replaceAll(" ", "%20");
-        String input = inputText + "%20" + destinationText;
         List<String> endpoints = new ArrayList<>();
+        String input = inputText;
+        if (destination != null){
+            String destinationText = destination.getAddress().replaceAll(" ", "%20");
+            input = inputText + "%20" + destinationText;
+        }
         endpoints.add("input=" + input);
         endpoints.add("inputtype=textquery");
         endpoints.add("fields=name,formatted_address,photos,geometry");
@@ -128,7 +185,9 @@ public class VisitPlaceFragment extends Fragment {
 
     private void saveVisitPlace(JSONObject topCandidate, Destination destination) throws JSONException {
         VisitPlace visitPlace = new VisitPlace();
-        visitPlace.setDestination(destination);
+        if (destination != null){
+            visitPlace.setDestination(destination);
+        }
         visitPlace.setName(topCandidate.getString("name"));
         visitPlace.setAddress(topCandidate.getString("formatted_address"));
         double lat = topCandidate.getJSONObject("geometry").getJSONObject("location").getDouble("lat");

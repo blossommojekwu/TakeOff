@@ -20,4 +20,6 @@
     <dimen name="paddingSmall">5dp</dimen>
     <dimen name="cardHeightSmall">70dp</dimen>
     <dimen name="marginNone">0dp</dimen>
+    <dimen name="visitPlaceRadius">15</dimen>
+    <dimen name="marginHuge">200dp</dimen>
 </resources>
