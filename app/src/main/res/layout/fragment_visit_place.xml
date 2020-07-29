@@ -1,50 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".visitplace.VisitPlaceFragment">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tvVisitPlacesHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:padding="@dimen/marginTiny"
+        android:text="@string/places_youll_go"
+        android:textColor="@color/colorBlack"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_marginLeft="@dimen/marginSmall"
-            android:id="@+id/tvVisitPlacesHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/places_youll_go"
-            android:textColor="@color/colorBlack"
-            android:textSize="24sp" />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/visitPlaceSwipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvVisitPlacesHeader">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvVisitPlaces"
-            android:layout_marginLeft="@dimen/marginSmMed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginTiny"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/marginSmall"
+        app:layout_constraintTop_toBottomOf="@+id/visitPlaceSwipeContainer"
+        tools:layout_editor_absoluteX="0dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etVisitPlaceText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/marginSmMed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:fontFamily="@font/montserrat"
             android:hint="Want to Visit ..."
             android:textColor="@color/colorBlack"
             android:textSize="18sp" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fabAddPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btnSize"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:text="@string/place"
+            app:icon="@drawable/ic_outline_add_24" />
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fabAddPlace"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/btnSize"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="@dimen/marginSmMed"
-        android:clickable="true"
-        android:text="@string/place"
-        app:icon="@drawable/ic_outline_add_24" />
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
