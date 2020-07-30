@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,7 @@ import com.example.takeoff.databinding.ActivityMainBinding;
 import com.example.takeoff.map.DestinationMapFragment;
 import com.example.takeoff.models.Destination;
 import com.example.takeoff.models.Hotel;
+import com.example.takeoff.models.VisitPlace;
 import com.example.takeoff.plan.PlanFragment;
 import com.example.takeoff.stay.StayFragment;
 import com.example.takeoff.visitplace.VisitPlaceFragment;
@@ -67,12 +69,15 @@ import static com.example.takeoff.R.string.google_places_api_key;
  * - ability to save Destination in parse server to populate feed of destinations
  * - ability to save Hotels nearby destination from saved destination
 */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements VisitPlaceFragment.OnSomeEventListener, StayFragment.OnGetHotelClickedListener{
 
     public static final String TAG = "MainActivity";
     public static final String SEARCH_BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     public static final String DETAIL_BASE_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
     private static final String PHOTO_BASE_URL = "https://maps.googleapis.com/maps/api/place/photo?";
+    public static final String KEY_VISIT_PLACES = "VISIT PLACES";
+    public static final String KEY_DESTINATION = "DESTINATION";
+    public static final String KEY_HOTEL_CLICKED = "HOTEL CLICKED";
     public static final int SEARCH_RADIUS = 5000; //in meters
     private static final String MAX_WIDTH = "300";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -84,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
     private ParseFile mDestinationPhotoFile;
     private String mDestinationPhotoFileName = "destination_photo.jpg";
     private Destination mCurrentDestination;
+    private List<VisitPlace> mVisitPlaces;
+    private Hotel mHotelClicked;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -134,6 +141,17 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.actionMap: fragment = new DestinationMapFragment();
                         Toast.makeText(MainActivity.this, R.string.map, Toast.LENGTH_SHORT).show();
+                        Bundle placesBundle = new Bundle();
+                        if (mVisitPlaces != null) {
+                            placesBundle.putParcelableArrayList(KEY_VISIT_PLACES, (ArrayList<? extends Parcelable>) mVisitPlaces);
+                        }
+                        if (mCurrentDestination != null){
+                            placesBundle.putParcelable(KEY_DESTINATION, Parcels.wrap(mCurrentDestination));
+                        }
+                        if (mHotelClicked != null){
+                            placesBundle.putParcelable(KEY_HOTEL_CLICKED, Parcels.wrap(mHotelClicked));
+                        }
+                        fragment.setArguments(placesBundle);
                         break;
                     case R.id.actionStay: fragment = new StayFragment();
                         Toast.makeText(MainActivity.this, R.string.stay, Toast.LENGTH_SHORT).show();
@@ -154,6 +172,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mButtomNavigation.setSelectedItemId(R.id.actionHome);
+    }
+
+    @Override
+    public void someEvent(List<VisitPlace> visitPlaces) {
+        mVisitPlaces = visitPlaces;
+    }
+
+    @Override
+    public void getHotel(Hotel hotel) {
+        mHotelClicked = hotel;
     }
 
     public void onSearchCalled() {

@@ -20,6 +20,7 @@
     <string name="plan">PLAN</string>
     <string name="stay">STAY</string>
     <string name="visit">VISIT</string>
+    <string name="map">MAP</string>
 
     <!-- PlanFragment Messages -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -28,7 +29,9 @@
     <string name="plan_to">"Plan to: "</string>
     <string name="checklist_change">"Change of Plans"</string>
     <string name="checklist_remove">Won\'t Be Doing That Anymore</string>
-    <string name="map">MAP</string>
+
+    <!-- VisitPlaceFragment Messages -->
     <string name="places_youll_go">Oh, the Places You\'ll Go!</string>
     <string name="place">Place</string>
+    <string name="added_place">Added Place</string>
 </resources>

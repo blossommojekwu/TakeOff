@@ -1,22 +1,19 @@
 package com.example.takeoff.stay;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.takeoff.R;
-import com.example.takeoff.destinations.DestinationMapActivity;
 import com.example.takeoff.models.Hotel;
-
-import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -26,13 +23,19 @@ import java.util.List;
  */
 public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder> {
 
+    public interface OnHotelClickListener{
+        void onHotelClick(Hotel hotel);
+    }
+
     //context to inflate view and position
     private Context mContext;
     private List<Hotel> mHotels;
+    private OnHotelClickListener hotelClickListener;
 
-    public HotelsAdapter(Context context, List<Hotel> hotels){
+    public HotelsAdapter(Context context, List<Hotel> hotels, OnHotelClickListener hotelClickListener){
         this.mContext = context;
         this.mHotels = hotels;
+        this.hotelClickListener = hotelClickListener;
     }
 
     @NonNull
@@ -100,12 +103,7 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
             if (position != RecyclerView.NO_POSITION){
                 //get destination at position
                 Hotel hotel = mHotels.get(position);
-                //create intent for new activity
-                Intent intent = new Intent(mContext, DestinationMapActivity.class);
-                //serialize destination using parceler w/ short name as key
-                intent.putExtra(Hotel.class.getSimpleName(), Parcels.wrap(hotel));
-                //show the activity
-                mContext.startActivity(intent);
+                hotelClickListener.onHotelClick(hotel);
             }
         }
     }
