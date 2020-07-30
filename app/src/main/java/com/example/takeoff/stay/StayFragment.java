@@ -1,5 +1,6 @@
 package com.example.takeoff.stay;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,9 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.takeoff.R;
 import com.example.takeoff.models.Hotel;
+import com.example.takeoff.models.VisitPlace;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -34,12 +37,27 @@ public class StayFragment extends Fragment {
     public static final int QUERY_LIMIT = 20;
     public static final int NUM_COLUMNS = 2;
     private SwipeRefreshLayout mHotelSwipeContainer;
+    private Hotel mHotelClicked;
     private RecyclerView mRvHotels;
+    private OnGetHotelClickedListener getHotelClickedListener;
     protected HotelsAdapter mAdapter;
     protected List<Hotel> mAllHotels;
 
     public StayFragment() {
         // Required empty public constructor
+    }
+
+    public interface OnGetHotelClickedListener {
+        void getHotel(Hotel hotel);
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try{
+            getHotelClickedListener = (OnGetHotelClickedListener) context;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -52,6 +70,15 @@ public class StayFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        HotelsAdapter.OnHotelClickListener  onHotelClickListener = new HotelsAdapter.OnHotelClickListener() {
+            @Override
+            public void onHotelClick(Hotel hotel) {
+                mHotelClicked = hotel;
+                getHotelClickedListener.getHotel(hotel);
+                Toast.makeText(getContext(), "See: " + mHotelClicked.getName(), Toast.LENGTH_SHORT).show();
+            }
+        };
         mRvHotels = view.findViewById(R.id.rvHotels);
         //steps to use the recycler view
         // 0. Create layout for one row in the list
@@ -59,7 +86,7 @@ public class StayFragment extends Fragment {
         // 1. create the adapter
         // 2. create the data source
         mAllHotels = new ArrayList<>();
-        mAdapter = new HotelsAdapter(getContext(), mAllHotels);
+        mAdapter = new HotelsAdapter(getContext(), mAllHotels, onHotelClickListener);
         mHotelSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.hotelSwipeContainer);
         // Setup refresh listener which triggers new data loading
         mHotelSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

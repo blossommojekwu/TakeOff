@@ -1,5 +1,6 @@
 package com.example.takeoff.visitplace;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -58,10 +59,26 @@ public class VisitPlaceFragment extends Fragment {
     private ExtendedFloatingActionButton mFloatingActionBtn;
     private RecyclerView mRvVisitPlaces;
     private TextInputEditText mEtVisitPlaceText;
-    List<VisitPlace> mVisitPlaces;
+    private List<VisitPlace> mVisitPlaces;
+    private OnSomeEventListener listener;
+
 
     public VisitPlaceFragment() {
         // Required empty public constructor
+    }
+
+    public interface OnSomeEventListener {
+        void someEvent(List<VisitPlace> visitPlaces);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try{
+            listener = (OnSomeEventListener) context;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -108,7 +125,7 @@ public class VisitPlaceFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Added Place", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.added_place, Toast.LENGTH_SHORT).show();
                 //save text in edit text when button is clicked
                 String placeItem = mEtVisitPlaceText.getText().toString();
                 //issue network request call for Google Places Search to save Visit Place
@@ -142,6 +159,7 @@ public class VisitPlaceFragment extends Fragment {
                 //update data source and notify adapter that we got new data
                 mVisitPlaces.addAll(visitPlaces);
                 mPlacesAdapter.notifyDataSetChanged();
+                listener.someEvent(mVisitPlaces);
             }
         });
     }
@@ -162,6 +180,7 @@ public class VisitPlaceFragment extends Fragment {
         endpoints.add("fields=name,formatted_address,photos,geometry");
         endpoints.add("key="+ getString(R.string.google_places_api_key));
         final String VISIT_PLACE_URL = SEARCH_BASE_URL + String.join("&", endpoints);
+        final String searchInput = inputText.replaceAll("%20", " ");
         Log.i(TAG, "VISIT PLACE URL: " + VISIT_PLACE_URL);
         placesSearchClient.get(VISIT_PLACE_URL, new JsonHttpResponseHandler() {
             @Override
@@ -171,7 +190,7 @@ public class VisitPlaceFragment extends Fragment {
                 try{
                     JSONArray candidates = jsonObject.getJSONArray("candidates");
                     JSONObject topCandidate = (JSONObject) candidates.get(0);
-                    saveVisitPlace(topCandidate, destination);
+                    saveVisitPlace(searchInput, topCandidate, destination);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -183,12 +202,12 @@ public class VisitPlaceFragment extends Fragment {
         });
     }
 
-    private void saveVisitPlace(JSONObject topCandidate, Destination destination) throws JSONException {
+    private void saveVisitPlace(String input, JSONObject topCandidate, Destination destination) throws JSONException {
         VisitPlace visitPlace = new VisitPlace();
         if (destination != null){
             visitPlace.setDestination(destination);
         }
-        visitPlace.setName(topCandidate.getString("name"));
+        visitPlace.setName(input);
         visitPlace.setAddress(topCandidate.getString("formatted_address"));
         double lat = topCandidate.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
         double lng = topCandidate.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
