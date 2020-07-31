@@ -19,12 +19,15 @@ import android.widget.Toast;
 
 import com.example.takeoff.R;
 import com.example.takeoff.models.Hotel;
-import com.example.takeoff.models.VisitPlace;
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -39,7 +42,7 @@ public class StayFragment extends Fragment {
     private SwipeRefreshLayout mHotelSwipeContainer;
     private Hotel mHotelClicked;
     private RecyclerView mRvHotels;
-    private OnGetHotelClickedListener getHotelClickedListener;
+    private OnGetHotelClickedListener mGetHotelClickedListener;
     protected HotelsAdapter mAdapter;
     protected List<Hotel> mAllHotels;
 
@@ -50,11 +53,12 @@ public class StayFragment extends Fragment {
     public interface OnGetHotelClickedListener {
         void getHotel(Hotel hotel);
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try{
-            getHotelClickedListener = (OnGetHotelClickedListener) context;
+            mGetHotelClickedListener = (OnGetHotelClickedListener) context;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,7 +79,7 @@ public class StayFragment extends Fragment {
             @Override
             public void onHotelClick(Hotel hotel) {
                 mHotelClicked = hotel;
-                getHotelClickedListener.getHotel(hotel);
+                mGetHotelClickedListener.getHotel(hotel);
                 Toast.makeText(getContext(), "See: " + mHotelClicked.getName(), Toast.LENGTH_SHORT).show();
             }
         };
@@ -112,10 +116,33 @@ public class StayFragment extends Fragment {
         mHotelSwipeContainer.setRefreshing(false);
     }
 
+    //calculates the distance in statute miles between 2 locations using GeoDataSource (TM) products
+    private double latLngDistance(LatLng location1, LatLng location2) {
+        double lat1 = location1.latitude;
+        double lat2 = location2.latitude;
+        double lon1 = location1.longitude;
+        double lon2 = location2.longitude;
+        if ((lat1 == lat2) && (lon1 == lon2)) {
+            return 0;
+        } else {
+            double theta = lon1 - lon2;
+            double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
+            dist = Math.acos(dist);
+            dist = Math.toDegrees(dist);
+            dist = dist * 60 * 1.1515;
+            return dist;
+        }
+    }
+
+    private LatLng convertGeoPoint(ParseGeoPoint geoPoint){
+        LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+        return latLng;
+    }
+
     private void queryHotels() {
         //Specify which class to query
         ParseQuery<Hotel> query = ParseQuery.getQuery(Hotel.class);
-        // only show hotels around current destination
+        // only show hotels with pointer to current destination
         query.include(Hotel.KEY_DESTINATION);
         query.setLimit(QUERY_LIMIT);
         query.addDescendingOrder(Hotel.KEY_CREATED_AT);
@@ -129,8 +156,16 @@ public class StayFragment extends Fragment {
                 for (Hotel hotel : hotels){
                     Log.i(TAG, "Hotel: " + hotel.getName() + ", address: " + hotel.getAddress());
                 }
-                //update data source and notify adapter that we got new data
                 mAllHotels.addAll(hotels);
+                Collections.sort(mAllHotels, new Comparator<Hotel>() {
+                    @Override
+                    public int compare(Hotel hotel1, Hotel hotel2) {
+                        LatLng hotelLocation1 = convertGeoPoint(hotel1.getLocation());
+                        LatLng hotelLocation2 = convertGeoPoint(hotel2.getLocation());
+                        LatLng destinationLocation = convertGeoPoint(hotel1.getDestination().getParseGeoPoint("location"));
+                        return (int) (latLngDistance(hotelLocation1, destinationLocation) - latLngDistance(hotelLocation2, destinationLocation));
+                    }
+                });
                 mAdapter.notifyDataSetChanged();
             }
         });
