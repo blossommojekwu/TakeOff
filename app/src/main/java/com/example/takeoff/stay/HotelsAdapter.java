@@ -30,12 +30,12 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
     //context to inflate view and position
     private Context mContext;
     private List<Hotel> mHotels;
-    private OnHotelClickListener hotelClickListener;
+    private OnHotelClickListener mHotelClickListener;
 
     public HotelsAdapter(Context context, List<Hotel> hotels, OnHotelClickListener hotelClickListener){
         this.mContext = context;
         this.mHotels = hotels;
-        this.hotelClickListener = hotelClickListener;
+        this.mHotelClickListener = hotelClickListener;
     }
 
     @NonNull
@@ -103,7 +103,7 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
             if (position != RecyclerView.NO_POSITION){
                 //get destination at position
                 Hotel hotel = mHotels.get(position);
-                hotelClickListener.onHotelClick(hotel);
+                mHotelClickListener.onHotelClick(hotel);
             }
         }
     }
