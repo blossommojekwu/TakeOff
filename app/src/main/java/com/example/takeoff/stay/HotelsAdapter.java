@@ -97,11 +97,11 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
 
         @Override
         public void onClick(View view) {
-            //get destination position
+            //get hotel position
             int position = getAdapterPosition();
             //position must be valid, i.e. actually exists in the view
-            if (position != RecyclerView.NO_POSITION){
-                //get destination at position
+            if (position != RecyclerView.NO_POSITION) {
+                //get hotel at position
                 Hotel hotel = mHotels.get(position);
                 mHotelClickListener.onHotelClick(hotel);
             }
