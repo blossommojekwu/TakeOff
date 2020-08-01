@@ -15,6 +15,10 @@
     <string name="saving_error">Error while saving</string>
     <string name="picture_not_taken">Picture wasn\'t taken!</string>
 
+    <!-- DestinationsFragment Messages -->
+    <string name="snack_bar_undo">UNDO</string>
+    <string name="deleting_error">Error while deleting</string>
+
     <!-- Bottom Navigation Toast Messages -->
     <string name="home">HOME</string>
     <string name="plan">PLAN</string>

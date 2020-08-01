@@ -2,11 +2,13 @@ package com.example.takeoff.destinations;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,11 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.takeoff.R;
 import com.example.takeoff.models.Destination;
+import com.example.takeoff.stay.StayFragment;
+import com.google.android.material.snackbar.Snackbar;
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 
 import org.parceler.Parcels;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * DestinationsAdapter:
@@ -29,6 +36,8 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
     public static final String TAG = "DestinationsAdapter";
     private Context mContext;
     private List<Destination> mDestinations;
+    private Destination mRecentlyDeletedDestination;
+    private int mRecentlyDeletedPosition;
 
     public DestinationsAdapter(Context context, List<Destination> destinations) {
         this.mContext = context;
@@ -58,6 +67,33 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
     @Override
     public int getItemCount() {
         return mDestinations.size();
+    }
+
+    public void deleteItem(int position){
+        if (mDestinations.size() > 0){
+            mRecentlyDeletedDestination = mDestinations.get(position);
+            mRecentlyDeletedPosition = position;
+            deleteHotel(mDestinations.get(position));
+            mDestinations.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    private void deleteHotel(Destination destination){
+        destination.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while deleting", e);
+                    Toast.makeText(mContext, R.string.deleting_error, Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Destination delete was successful!");
+            }
+        });
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

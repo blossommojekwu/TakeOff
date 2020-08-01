@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -34,6 +35,7 @@ public class DestinationsFragment extends Fragment {
     public static final int QUERY_LIMIT = 5;
     private SwipeRefreshLayout mSwipeContainer;
     private RecyclerView mRvDestinations;
+    private ItemTouchHelper mItemTouchHelper;
     protected DestinationsAdapter mAdapter;
     protected List<Destination> mAllDestinations;
 
@@ -75,6 +77,8 @@ public class DestinationsFragment extends Fragment {
         mRvDestinations.setAdapter(mAdapter);
         // 4. set the layout manager on the recycler view
         mRvDestinations.setLayoutManager(linearLayoutManager);
+        mItemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(mAdapter));
+        mItemTouchHelper.attachToRecyclerView(mRvDestinations);
         queryDestinations();
     }
 
