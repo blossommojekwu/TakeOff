@@ -36,20 +36,16 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 * user can create an account
 * user can add destination
 * user can view map location of destination
-* user can read info about destination
-* user can add friends
+* user can see view types and website of destination
 * user can create checklist for planning
-* user can upload an image
+* user can see markers for destination, hotel, and visit places
 * user can use a calender
 * user can view options of places to stay
 * user can create list of places to visit
 
 **Optional Nice-to-have Stories**
 
-* user can add a comment to a photo
-* user can include geotag to photo
-* user can share images 
-* user can see notifications when their photo is liked or if allowed group added to list
+* user can upload images to memories screen
 
 ### 2. Screen Archetypes
 * Login Screen
@@ -60,22 +56,22 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
     * user can add a destination
     * user can view image of destination
     * user can swipe to delete destination
-    * user can click on location to see details
+    * user can click on location to see map view
     * Optional: Scrolling Effects
-* Destination Details Page
+* Destination Map Page
     * user can view a map location of the destination
-    * user can view an image location of the destination
+    * user can see marker for their location and destination location
 * Plan Page
     * user can use calendar to select dates
-    * Optional: user can ccollapse calender once dates are selected + update when clicked on/hover
+    * user can collapse calender once dates are selected
     * user can add to checklist of TODO items 
 * Stay Page
-    * user can view possible hostels/hotels/airbnbs options to stay
-    * user can view price and image
+    * user can view possible hotels options to stay
+    * user can view image and info for hotels
 * Visit/Itinerary Page
     * user can add list of museums/restaurants/locations to visit
     * user can display options in layout with Google Places SDK
-    * user can remove an option with feature (long click)
+    * user can remove an option with feature (long click or swipe to remove)
     * Optional: user can view list of recommended places to go at destination
 * OPTIONAL: 
     * user can chat with followers/ travel buddies
@@ -91,7 +87,6 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 * Plan Page
 * Places to Stay Feed
 * Places to Visit Feed
-* Memories Feed/Post a Photo
 
 **Flow Navigation** (Screen to Screen)
 
@@ -100,12 +95,11 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 * Registration Screen
     => Home (Destination Page)
 * Destination Page (Stream Screen)
-    => Destination Details Page
+    => Destination Map Page
 * Destination Details Page (Stream Screen)
     => Plan Screen
     => Stay Screen
     => Visit Screen
-    => Memories Screen
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
@@ -124,25 +118,31 @@ V4: List of place users plan to stay hotels/hostels/airbnb api
 | objectId | String | unique id for the user post (default field) |
 | author | Pointer to User | image author |
 |image | File | image that user profile picture |
-| location | Parse GeoPoint | Location of user |
 
 #### Destinations
 | Property | Type | Description |
 | --- | --- | --- |
-| destination | String | name of place that you search/add |
+| name | String | name of place that you search/add |
 |image | File | image from Google Places API that displays destination |
 | location | Parse GeoPoint | longitude and latitude of destination searched/added |
-| description | String | description of location |
+| address| String | address of location |
+| types | String Array | array of destination types |
+|websiteURI | String | website for destination |
 
 
 #### Hotels
 | Property | Type | Description |
 | --- | --- | --- |
 | name | String | name of hotel |
-|image | File | image of hotel |
-| price | long | price of hotel room |
+| address | String | address of the hotel|
+| website | String | website of hotel |
+| phoneNumber | String | hotel's phone number |
+| location | Parse Geopoint | location of the hotel |
+|imageURL | String | image url of hotel |
+| priceLevel | long | price of hotel room |
 | rating | double | rating of hotel |
-|description | String | hotel room description |
+| placeId | String | placeId for Google Place network request call to get hotel details |
+| destination | Pointer | Pointer to destination associated with hotel |
 
 #### VisitPlace
 | Property | Type | Description |
