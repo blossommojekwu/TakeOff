@@ -61,6 +61,7 @@
             android:layout_height="@dimen/btnSize"
             android:layout_gravity="bottom|center"
             android:layout_marginTop="20dp"
+            app:rippleColor="@color/colorWhite"
             android:clickable="true"
             android:text="@string/place"
             app:icon="@drawable/ic_outline_add_24" />

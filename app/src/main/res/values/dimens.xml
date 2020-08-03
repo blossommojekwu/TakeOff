@@ -22,4 +22,5 @@
     <dimen name="marginNone">0dp</dimen>
     <dimen name="visitPlaceRadius">15</dimen>
     <dimen name="marginHuge">200dp</dimen>
+    <dimen name="cardElevation">20dp</dimen>
 </resources>
