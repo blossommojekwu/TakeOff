@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -167,7 +168,12 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
                         }
                         break;
                 }
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                // Configure the "in" and "out" animation files
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+                // Perform the fragment replacement
+                // Start the animated transition.
+                fragmentTransaction.replace(R.id.flContainer, fragment).commit();
                 return true;
             }
         });

@@ -65,6 +65,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/marginSmall"
+            app:rippleColor="@color/colorWhite"
+            android:clickable="true"
             app:srcCompat="@drawable/ic_outline_add_24"/>
 
         <com.google.android.material.textfield.TextInputEditText
@@ -72,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/marginLarge"
-            android:hint="hint"
+            android:hint="Planning to: "
             app:layout_anchor="@+id/textInputLayout"
             app:layout_anchorGravity="center" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

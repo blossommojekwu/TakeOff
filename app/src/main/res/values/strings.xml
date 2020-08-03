@@ -16,6 +16,7 @@
     <string name="picture_not_taken">Picture wasn\'t taken!</string>
 
     <!-- DestinationsFragment Messages -->
+    <string name="snackbar_text">Still want to delete?</string>
     <string name="snack_bar_undo">UNDO</string>
     <string name="deleting_error">Error while deleting</string>
 

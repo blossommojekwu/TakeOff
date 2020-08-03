@@ -16,11 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.takeoff.R;
 import com.example.takeoff.models.Destination;
-import com.example.takeoff.stay.StayFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -38,10 +39,12 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
     private List<Destination> mDestinations;
     private Destination mRecentlyDeletedDestination;
     private int mRecentlyDeletedPosition;
+    private DestinationsFragment mDestinationsFragment;
 
-    public DestinationsAdapter(Context context, List<Destination> destinations) {
+    public DestinationsAdapter(Context context, List<Destination> destinations, DestinationsFragment destinationsFragment) {
         this.mContext = context;
         this.mDestinations = destinations;
+        this.mDestinationsFragment = destinationsFragment;
     }
 
     @NonNull
@@ -76,7 +79,41 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
             deleteHotel(mDestinations.get(position));
             mDestinations.remove(position);
             notifyItemRemoved(position);
+            showUndoSnackbar();
         }
+    }
+
+    private void showUndoSnackbar() {
+        View view = mDestinationsFragment.getView();
+        Snackbar snackbar = Snackbar.make(view, R.string.snackbar_text,
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
+        snackbar.show();
+    }
+
+    public void undoDelete() {
+        mDestinations.add(mRecentlyDeletedPosition,
+                mRecentlyDeletedDestination);
+        notifyItemInserted(mRecentlyDeletedPosition);
+        Destination deletedDestination = new Destination();
+        deletedDestination.setUser(mRecentlyDeletedDestination.getUser());
+        deletedDestination.setName(mRecentlyDeletedDestination.getName());
+        deletedDestination.setAddress(mRecentlyDeletedDestination.getAddress());
+        deletedDestination.setDescription(mRecentlyDeletedDestination.getDescription());
+        deletedDestination.setTypes(mRecentlyDeletedDestination.getTypes());
+        deletedDestination.setLocation(mRecentlyDeletedDestination.getLocation());
+        deletedDestination.setWebsite(mRecentlyDeletedDestination.getWebsite());
+        deletedDestination.setImage(mRecentlyDeletedDestination.getImage());
+        deletedDestination.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){
+                    Log.e(TAG, "Error while saving", e);
+                    Toast.makeText(mContext, R.string.saving_error, Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Destination undo delete was successful!");
+            }
+        });
     }
 
     public Context getContext() {
