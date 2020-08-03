@@ -118,7 +118,7 @@ public class VisitPlaceFragment extends Fragment {
         // 1. create the adapter
         // 2. create the data source
         mVisitPlaces = new ArrayList<>();
-        mPlacesAdapter = new VisitPlacesAdapter(getContext(), mVisitPlaces);
+        mPlacesAdapter = new VisitPlacesAdapter(getContext(), mVisitPlaces, this);
         // 3. set the adapter on the recycler view
         mRvVisitPlaces.setAdapter(mPlacesAdapter);
         // 4. set the layout manager on the recycler view

@@ -17,8 +17,10 @@ import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.takeoff.R;
 import com.example.takeoff.models.VisitPlace;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -30,10 +32,12 @@ public class VisitPlacesAdapter extends RecyclerView.Adapter<VisitPlacesAdapter.
     private List<VisitPlace> mVisitPlaces;
     private VisitPlace mRecentlyDeletedPlace;
     private int mRecentlyDeletedPosition;
+    private VisitPlaceFragment mVisitPlaceFragment;
 
-    public VisitPlacesAdapter(Context context, List<VisitPlace> visitPlaces){
+    public VisitPlacesAdapter(Context context, List<VisitPlace> visitPlaces, VisitPlaceFragment visitPlaceFragment){
         this.mContext = context;
         this.mVisitPlaces = visitPlaces;
+        this.mVisitPlaceFragment = visitPlaceFragment;
     }
     @NonNull
     @Override
@@ -69,6 +73,41 @@ public class VisitPlacesAdapter extends RecyclerView.Adapter<VisitPlacesAdapter.
         deletePlace(mVisitPlaces.get(position));
         mVisitPlaces.remove(position);
         notifyItemRemoved(position);
+        showUndoSnackbar();
+    }
+
+    private void showUndoSnackbar() {
+        View view = mVisitPlaceFragment.getView();
+        Snackbar snackbar = Snackbar.make(view, R.string.snackbar_text,
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        mVisitPlaces.add(mRecentlyDeletedPosition, mRecentlyDeletedPlace);
+        notifyItemInserted(mRecentlyDeletedPosition);
+        VisitPlace deletedPlace = newVisitPlace();
+        deletedPlace.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){
+                    Log.e(TAG, "Error while saving", e);
+                    Toast.makeText(mContext, R.string.saving_error, Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Place undo delete was successful!");
+            }
+        });
+    }
+
+    private VisitPlace newVisitPlace(){
+        VisitPlace deletedPlace = new VisitPlace();
+        deletedPlace.setName(mRecentlyDeletedPlace.getName());
+        deletedPlace.setAddress(mRecentlyDeletedPlace.getAddress());
+        deletedPlace.setLocation(mRecentlyDeletedPlace.getLocation());
+        deletedPlace.setPhotoURL(mRecentlyDeletedPlace.getPhotoURL());
+        deletedPlace.setDestination(mRecentlyDeletedPlace.getDestination());
+        return deletedPlace;
     }
 
     private void deletePlace(VisitPlace visitPlace){
