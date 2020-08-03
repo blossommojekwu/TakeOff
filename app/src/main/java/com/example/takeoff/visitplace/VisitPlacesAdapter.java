@@ -1,6 +1,7 @@
 package com.example.takeoff.visitplace;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +17,19 @@ import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.takeoff.R;
 import com.example.takeoff.models.VisitPlace;
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
 
 import java.util.List;
 
 public class VisitPlacesAdapter extends RecyclerView.Adapter<VisitPlacesAdapter.ViewHolder> {
 
     //context to inflate view and position
+    public static final String TAG = "VisitPlacesAdapter";
     private Context mContext;
     private List<VisitPlace> mVisitPlaces;
+    private VisitPlace mRecentlyDeletedPlace;
+    private int mRecentlyDeletedPosition;
 
     public VisitPlacesAdapter(Context context, List<VisitPlace> visitPlaces){
         this.mContext = context;
@@ -58,7 +64,24 @@ public class VisitPlacesAdapter extends RecyclerView.Adapter<VisitPlacesAdapter.
     }
 
     public void deleteItem(int position) {
-        Toast.makeText(mContext, "SWIPED", Toast.LENGTH_SHORT).show();
+        mRecentlyDeletedPlace = mVisitPlaces.get(position);
+        mRecentlyDeletedPosition = position;
+        deletePlace(mVisitPlaces.get(position));
+        mVisitPlaces.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void deletePlace(VisitPlace visitPlace){
+        visitPlace.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while deleting", e);
+                    Toast.makeText(mContext, R.string.deleting_error, Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Place delete was successful!");
+            }
+        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
