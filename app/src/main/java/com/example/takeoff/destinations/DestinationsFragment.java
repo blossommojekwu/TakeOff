@@ -60,7 +60,7 @@ public class DestinationsFragment extends Fragment {
         // 1. create the adapter
         // 2. create the data source
         mAllDestinations = new ArrayList<>();
-        mAdapter = new DestinationsAdapter(getContext(), mAllDestinations);
+        mAdapter = new DestinationsAdapter(getContext(), mAllDestinations, this);
         mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
