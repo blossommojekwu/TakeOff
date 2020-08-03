@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +51,14 @@ public class VisitPlacesAdapter extends RecyclerView.Adapter<VisitPlacesAdapter.
     public void clear() {
         mVisitPlaces.clear();
         notifyDataSetChanged();
+    }
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    public void deleteItem(int position) {
+        Toast.makeText(mContext, "SWIPED", Toast.LENGTH_SHORT).show();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

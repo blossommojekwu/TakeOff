@@ -1,4 +1,4 @@
-package com.example.takeoff.destinations;
+package com.example.takeoff.visitplace;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,18 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.takeoff.R;
 
-public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
+public class SwipeToDeleteVisitPlaceCallback extends ItemTouchHelper.SimpleCallback{
 
-    private DestinationsAdapter mDestinationsAdapter;
+    private VisitPlacesAdapter mVisitPlacesAdapter;
     private Drawable mIcon;
     private ColorDrawable mBackground;
     private int mColor;
 
-    public SwipeToDeleteCallback(DestinationsAdapter destinationsAdapter) {
+    public SwipeToDeleteVisitPlaceCallback(VisitPlacesAdapter visitPlacesAdapter) {
         super(0, ItemTouchHelper.RIGHT);
-        mDestinationsAdapter = destinationsAdapter;
-        mIcon = ContextCompat.getDrawable(mDestinationsAdapter.getContext(), R.drawable.ic_remove_circle_outline_24);
-        mColor = Color.rgb(243, 245, 247);
+        mVisitPlacesAdapter = visitPlacesAdapter;
+        mIcon = ContextCompat.getDrawable(mVisitPlacesAdapter.getContext(), R.drawable.ic_cancel_clear);
+        mColor = Color.rgb(255, 0, 0);
         mBackground = new ColorDrawable(mColor);
     }
 
@@ -36,7 +36,7 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int position = viewHolder.getAdapterPosition();
-        mDestinationsAdapter.deleteItem(position);
+        mVisitPlacesAdapter.deleteItem(position);
     }
 
     @Override
@@ -45,15 +45,15 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
         View itemView = viewHolder.itemView;
         int backgroundCornerOffset = 20;
         int iconMargin = (itemView.getHeight() - mIcon.getIntrinsicHeight()) / 2;
-        int iconTop = itemView.getTop() - mIcon.getIntrinsicHeight() + (iconMargin / 2) * 2;
-        int iconBottom = itemView.getBottom() - mIcon.getIntrinsicHeight() * 2;
+        int iconTop = itemView.getTop() + (mIcon.getIntrinsicHeight() / 2);
+        int iconBottom = itemView.getBottom() - (mIcon.getIntrinsicHeight() / 2);
 
         if (dX > 0) { // Swiping to the right
             int iconLeft = itemView.getLeft() + backgroundCornerOffset;
-            int iconRight = itemView.getLeft() + backgroundCornerOffset + iconMargin;
+            int iconRight = itemView.getLeft() + (backgroundCornerOffset * 4) + iconMargin;
 
             mBackground.setBounds(itemView.getLeft(), itemView.getTop(),
-                    itemView.getLeft() + ((int) dX) + backgroundCornerOffset,
+                    itemView.getLeft() + ((int) dX / 4) + backgroundCornerOffset,
                     itemView.getBottom());
             mIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
         } else { // view is unSwiped

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.takeoff.R;
+import com.example.takeoff.destinations.SwipeToDeleteCallback;
 import com.example.takeoff.models.Destination;
 import com.example.takeoff.models.VisitPlace;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -61,6 +63,7 @@ public class VisitPlaceFragment extends Fragment {
     private TextInputEditText mEtVisitPlaceText;
     private List<VisitPlace> mVisitPlaces;
     private OnSomeEventListener listener;
+    private ItemTouchHelper mItemTouchHelper;
 
 
     public VisitPlaceFragment() {
@@ -120,6 +123,8 @@ public class VisitPlaceFragment extends Fragment {
         mRvVisitPlaces.setAdapter(mPlacesAdapter);
         // 4. set the layout manager on the recycler view
         mRvVisitPlaces.setLayoutManager(new LinearLayoutManager(getContext()));
+        mItemTouchHelper = new ItemTouchHelper(new SwipeToDeleteVisitPlaceCallback(mPlacesAdapter));
+        mItemTouchHelper.attachToRecyclerView(mRvVisitPlaces);
         queryVisitPlace();
         mFloatingActionBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
