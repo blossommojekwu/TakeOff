@@ -157,15 +157,17 @@ public class StayFragment extends Fragment {
                     Log.i(TAG, "Hotel: " + hotel.getName() + ", address: " + hotel.getAddress());
                 }
                 mAllHotels.addAll(hotels);
-                Collections.sort(mAllHotels, new Comparator<Hotel>() {
-                    @Override
-                    public int compare(Hotel hotel1, Hotel hotel2) {
-                        LatLng hotelLocation1 = convertGeoPoint(hotel1.getLocation());
-                        LatLng hotelLocation2 = convertGeoPoint(hotel2.getLocation());
-                        LatLng destinationLocation = convertGeoPoint(hotel1.getDestination().getParseGeoPoint("location"));
-                        return (int) (latLngDistance(hotelLocation1, destinationLocation) - latLngDistance(hotelLocation2, destinationLocation));
-                    }
-                });
+                if(mAllHotels.get(0).getDestination() != null){
+                    Collections.sort(mAllHotels, new Comparator<Hotel>() {
+                        @Override
+                        public int compare(Hotel hotel1, Hotel hotel2) {
+                            LatLng hotelLocation1 = convertGeoPoint(hotel1.getLocation());
+                            LatLng hotelLocation2 = convertGeoPoint(hotel2.getLocation());
+                            LatLng destinationLocation = convertGeoPoint(hotel1.getDestination().getParseGeoPoint("location"));
+                            return (int) (latLngDistance(hotelLocation1, destinationLocation) - latLngDistance(hotelLocation2, destinationLocation));
+                        }
+                    });
+                }
                 mAdapter.notifyDataSetChanged();
             }
         });

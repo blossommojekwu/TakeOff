@@ -23,4 +23,5 @@
     <dimen name="visitPlaceRadius">15</dimen>
     <dimen name="marginHuge">200dp</dimen>
     <dimen name="cardElevation">20dp</dimen>
+    <dimen name="bottomNavCorner">18dp</dimen>
 </resources>

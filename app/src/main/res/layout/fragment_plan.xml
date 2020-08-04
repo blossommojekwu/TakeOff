@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/marginSmall"
+            android:backgroundTint="@color/colorAccent"
             app:rippleColor="@color/colorWhite"
             android:clickable="true"
             app:srcCompat="@drawable/ic_outline_add_24"/>
