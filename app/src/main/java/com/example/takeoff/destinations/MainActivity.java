@@ -379,10 +379,11 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
         final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
                 .build();
         mPlacesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
-            Bitmap bitmap = fetchPhotoResponse.getBitmap();
-            if (bitmap == null){
+            Bitmap bitmapSrc = fetchPhotoResponse.getBitmap();
+            if (bitmapSrc == null){
                 Log.e(TAG, "Bitmap is NULL");
             } else {
+                Bitmap bitmap = cropToSquare(bitmapSrc);
                 mDestinationPhotoFile = convertBitmapToParsefile(bitmap, mDestinationPhotoFileName);
                 Log.i(TAG, "Photo File STATUS: " + mDestinationPhotoFile.isDataAvailable());
                 destination.setImage(mDestinationPhotoFile);
@@ -408,5 +409,18 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
         byte[] imageByte = bos.toByteArray();
         ParseFile parseFile = new ParseFile(fileName,imageByte);
         return parseFile;
+    }
+
+    public static Bitmap cropToSquare(Bitmap bitmap){
+        int width  = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int newWidth = (height > width) ? width : height;
+        int newHeight = (height > width)? height - ( height - width) : height;
+        int cropW = (width - height) / 2;
+        cropW = (cropW < 0)? 0: cropW;
+        int cropH = (height - width) / 2;
+        cropH = (cropH < 0)? 0: cropH;
+        Bitmap cropImg = Bitmap.createBitmap(bitmap, cropW, cropH, newWidth, newHeight);
+        return cropImg;
     }
 }
