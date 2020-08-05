@@ -21,74 +21,82 @@
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/montserrat"
             android:text="Paris"
-            android:textColor="@color/colorBlack"
-            android:textSize="20sp" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/ivDestinationImage"
                 android:layout_width="@dimen/imageSmMed"
                 android:layout_height="@dimen/imageSmMed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-            <TextView
-                android:id="@+id/tvDestinationAddress"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/destinationInfo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/marginTiny"
-                android:fontFamily="@font/montserrat"
-                android:text="Paris, France"
-                android:textColor="@color/colorBlack"
-                android:textSize="14sp"
-                app:layout_constraintStart_toEndOf="@+id/ivDestinationImage"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvDestinationType1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/marginTiny"
-                android:layout_marginTop="1dp"
-                android:background="@color/colorPurpleGray"
-                android:fontFamily="@font/montserrat"
-                android:text="TextView"
-                android:textColor="@color/colorBlack"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/ivDestinationImage"
-                app:layout_constraintTop_toBottomOf="@+id/tvDestinationAddress" />
+                <TextView
+                    android:id="@+id/tvDestinationAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/marginTiny"
+                    android:background="@color/colorGhostWhite"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Paris, France"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <LinearLayout
+                    android:id="@+id/Types"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tvDestinationType1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/marginTiny"
+                        android:layout_marginTop="@dimen/marginTiny"
+                        android:background="@color/colorGhostWhite"
+                        android:fontFamily="@font/montserrat"
+                        android:text="TextView"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp"/>
 
-            <TextView
-                android:id="@+id/tvDestinationType2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/marginTiny"
-                android:background="@color/colorPurpleGray"
-                android:fontFamily="@font/montserrat"
-                android:text="TextView"
-                android:textColor="@color/colorBlack"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/tvDestinationType1"
-                app:layout_constraintTop_toTopOf="@+id/tvDestinationType1" />
+                    <TextView
+                        android:id="@+id/tvDestinationType2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/marginTiny"
+                        android:layout_marginStart="@dimen/marginTiny"
+                        android:layout_marginTop="@dimen/marginTiny"
+                        android:background="@color/colorGhostWhite"
+                        android:fontFamily="@font/montserrat"
+                        android:text="TextView"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp"/>
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvDestinationWebsite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:linksClickable="true"
-                android:layout_marginStart="@dimen/marginTiny"
-                android:layout_marginTop="@dimen/marginSmMed"
-                android:fontFamily="@font/montserrat"
-                android:text="Website not available"
-                android:textColor="@color/colorBlack"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/ivDestinationImage"
-                app:layout_constraintTop_toBottomOf="@+id/tvDestinationType1" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tvDestinationWebsite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/marginTiny"
+                    android:layout_marginTop="@dimen/marginSmMed"
+                    android:autoLink="all"
+                    android:background="@color/colorGhostWhite"
+                    android:fontFamily="@font/montserrat"
+                    android:linksClickable="true"
+                    android:text="Website not available"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

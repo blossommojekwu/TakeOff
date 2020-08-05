@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/private/var/folders/x2/sfdry2757ngcfv0kxc4t5v8w0000gn/T/AppTranslocation/2ED229DD-FB0C-40EB-A070-9CCFE679CA4C/d/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialiconsoutlined/add/outline_add_24.xml" />
+                                      <entry key="url" value="jar:file:/private/var/folders/x2/sfdry2757ngcfv0kxc4t5v8w0000gn/T/AppTranslocation/A2ED0138-E7DE-4F34-8E0F-473541C4E81D/d/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/search/baseline_search_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_outline_add_24" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_baseline_search_24" />
                           </map>
                         </option>
                       </PersistentState>

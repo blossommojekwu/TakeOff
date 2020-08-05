@@ -20,13 +20,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * DestinationsAdapter:
@@ -135,6 +133,7 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        public static final int mTransparency = 100; // ranges from 0 (fully transparent) to 255 (fully opaque)
         private TextView mTvDestinationName;
         private ImageView mIvDestinationImage;
         private TextView mTvDestinationAddress;
@@ -179,8 +178,9 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
             mTvDestinationType1.setVisibility(View.GONE);
             mTvDestinationType2.setVisibility(View.GONE);
             ParseFile image = destination.getImage();
+            mTvDestinationAddress.getBackground().setAlpha(mTransparency);
             if (image != null) {
-                Glide.with(mContext).load(image.getUrl()).into(mIvDestinationImage);
+                Glide.with(mContext).load(image.getUrl()).fitCenter().into(mIvDestinationImage);
             }
             if (destination.getTypes() != null){
                 mTvDestinationType1.setVisibility(View.VISIBLE);

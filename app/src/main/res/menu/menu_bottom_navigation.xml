@@ -14,7 +14,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/actionMap"
-        android:icon="@drawable/ic_globe_black"
+        android:icon="@drawable/ic_globe_24"
         android:title="Map"
         app:showAsAction="always" />
     <item
