@@ -2,15 +2,18 @@ package com.example.takeoff.destinations;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -133,7 +136,7 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public static final int mTransparency = 100; // ranges from 0 (fully transparent) to 255 (fully opaque)
+        public static final int mTransparency = 128; // ranges from 0 (fully transparent) to 255 (fully opaque)
         private TextView mTvDestinationName;
         private ImageView mIvDestinationImage;
         private TextView mTvDestinationAddress;
@@ -141,6 +144,7 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
         private TextView mTvDestinationType1;
         private TextView mTvDestinationType2;
         private TextView mTvDestinationWebsite;
+        private Button mBtnHttp;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -150,6 +154,7 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
             mTvDestinationType1 = itemView.findViewById(R.id.tvDestinationType1);
             mTvDestinationType2 = itemView.findViewById(R.id.tvDestinationType2);
             mTvDestinationWebsite = itemView.findViewById(R.id.tvDestinationWebsite);
+            mBtnHttp = itemView.findViewById(R.id.btnHttp);
             itemView.setOnClickListener(this);
         }
 
@@ -178,7 +183,7 @@ public class DestinationsAdapter extends RecyclerView.Adapter<DestinationsAdapte
             mTvDestinationType1.setVisibility(View.GONE);
             mTvDestinationType2.setVisibility(View.GONE);
             ParseFile image = destination.getImage();
-            mTvDestinationAddress.getBackground().setAlpha(mTransparency);
+            //mTvDestinationAddress.getBackground().setAlpha(mTransparency);
             if (image != null) {
                 Glide.with(mContext).load(image.getUrl()).fitCenter().into(mIvDestinationImage);
             }

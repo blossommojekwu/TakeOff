@@ -24,4 +24,6 @@
     <dimen name="marginHuge">200dp</dimen>
     <dimen name="cardElevation">20dp</dimen>
     <dimen name="bottomNavCorner">18dp</dimen>
+    <dimen name="buttonSmallWidth">55dp</dimen>
+    <dimen name="buttonSmallHeight">30dp</dimen>
 </resources>
