@@ -13,31 +13,49 @@
         android:layout_gravity="center_horizontal"
         android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDatePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:layout_marginBottom="@dimen/marginSmall"
-            android:text="Choose Dates" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvSelectedDates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/marginSmall"
-            android:textColor="@color/colorBlack"
-            android:textSize="20sp" />
+            <ImageView
+                android:id="@+id/ivBackgroundImage"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:srcCompat="@drawable/grid_view" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDatePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginMedium"
+                    android:text="Choose Dates" />
+
+                <TextView
+                    android:id="@+id/tvSelectedDates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/montserrat"
+                    android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Headline4"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Selected Dates: Jan 1-Feb 1" />
+            </LinearLayout>
+        </RelativeLayout>
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dividerHeight"
             android:background="?android:attr/listDivider"
             android:layout_marginBottom="@dimen/marginSmall"/>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChecklist"
             android:layout_width="match_parent"

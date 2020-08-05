@@ -42,6 +42,7 @@ import java.util.TimeZone;
 public class PlanFragment extends Fragment implements EditChecklistDialogFragment.EditChecklistDialogListener {
 
     public static final String TAG = "PlanFragment";
+    public static final int mAlpha = 200;
     private int KEY_ITEM_POSITION = 0;
     private MaterialButton mBtnDatePicker;
     private TextView mTvSelectedDates;
@@ -71,13 +72,12 @@ public class PlanFragment extends Fragment implements EditChecklistDialogFragmen
         mTvSelectedDates = view.findViewById(R.id.tvSelectedDates);
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.clear();
-
+        mBtnDatePicker.getBackground().setAlpha(mAlpha);
         //MaterialDatePicker
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText(R.string.select_dates);
 
         final MaterialDatePicker materialDatePicker = builder.build();
-
         mBtnDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
