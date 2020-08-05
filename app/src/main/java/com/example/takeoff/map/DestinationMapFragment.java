@@ -91,7 +91,7 @@ public class DestinationMapFragment extends Fragment implements OnMapReadyCallba
             Log.i(TAG, "Map City: " + mDestination.getAddress());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDestinationLocation, DEFAULT_ZOOM));
         }
-        if (mVisitPlaces != null){
+        if (mVisitPlaces != null && mVisitPlaces.size() > 0){
             mFirstPlaceLocation = new LatLng(mVisitPlaces.get(0).getLocation().getLatitude(), mVisitPlaces.get(0).getLocation().getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mFirstPlaceLocation, DEFAULT_ZOOM));
             for (VisitPlace visitPlace : mVisitPlaces){
