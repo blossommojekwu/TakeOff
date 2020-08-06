@@ -12,7 +12,7 @@
     <dimen name="imageLarge">300dp</dimen>
     <dimen name="card_corner_radius">10dp</dimen>
     <dimen name="dividerHeight">2dp</dimen>
-    <dimen name="textWidth">300dp</dimen>
+    <dimen name="textWidth">250dp</dimen>
     <dimen name="btnSize">50dp</dimen>
     <dimen name="ratingWidth">100dp</dimen>
     <dimen name="ratingHeight">30dp</dimen>
@@ -26,4 +26,6 @@
     <dimen name="bottomNavCorner">18dp</dimen>
     <dimen name="buttonSmallWidth">55dp</dimen>
     <dimen name="buttonSmallHeight">30dp</dimen>
+    <dimen name="dialogHeight">200dp</dimen>
+    <dimen name="btnSizeWidth">70dp</dimen>
 </resources>

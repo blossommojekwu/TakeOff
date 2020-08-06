@@ -56,45 +56,44 @@
             android:layout_height="@dimen/dividerHeight"
             android:background="?android:attr/listDivider"
             android:layout_marginBottom="@dimen/marginSmall"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChecklist"
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/marginLarge">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:layout_gravity="top">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvChecklist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginLarge"></androidx.recyclerview.widget.RecyclerView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom|left"
+                android:layout_marginRight="@dimen/marginLarge">
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etChecklistItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/marginLarge"
+                android:hint="Planning to: "
+                app:layout_anchor="@+id/textInputLayout"
+                app:layout_anchorGravity="center" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionBtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom|left"
-            android:layout_marginRight="@dimen/marginLarge">
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/marginSmall"
-            android:backgroundTint="@color/colorAccent"
-            app:rippleColor="@color/colorWhite"
-            android:clickable="true"
-            app:srcCompat="@drawable/ic_outline_add_24"/>
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etChecklistItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/marginLarge"
-            android:hint="Planning to: "
-            app:layout_anchor="@+id/textInputLayout"
-            app:layout_anchorGravity="center" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/marginSmall"
+        android:backgroundTint="@color/colorAccent"
+        app:rippleColor="@color/colorWhite"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_outline_add_24"/>
 </FrameLayout>
