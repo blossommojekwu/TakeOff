@@ -91,7 +91,7 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
             mTvHotelPhoneNumber.setText(hotel.getPhoneNumber());
             mRatingBarHotel.setRating((float) hotel.getRating());
             if (hotel.getImageURL() != null){
-                Glide.with(mContext).load(hotel.getImageURL()).into(mIvHotelImage);
+                Glide.with(mContext).load(hotel.getImageURL()).fitCenter().into(mIvHotelImage);
             }
         }
 

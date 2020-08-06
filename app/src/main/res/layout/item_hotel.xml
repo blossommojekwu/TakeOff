@@ -29,6 +29,8 @@
             android:id="@+id/ivHotelImage"
             android:layout_width="@dimen/imageMedium"
             android:layout_height="@dimen/imageMedium"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <TextView
