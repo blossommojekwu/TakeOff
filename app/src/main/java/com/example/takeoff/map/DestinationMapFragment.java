@@ -43,11 +43,13 @@ public class DestinationMapFragment extends Fragment implements OnMapReadyCallba
     private List<VisitPlace> mVisitPlaces;
     private Destination mDestination;
     private Hotel mHotelClicked;
+    private List<Hotel> mHotelsTapped;
     private LatLng mHotelClickedLocation;
     private LatLng mDestinationLocation;
     private GoogleMap mMap;
     private UiSettings mUiSettings;
     private LatLng mFirstPlaceLocation;
+    private LatLng mFirstHotelLocation;
 
     public DestinationMapFragment() {
         // Required empty public constructor
@@ -60,14 +62,11 @@ public class DestinationMapFragment extends Fragment implements OnMapReadyCallba
         if (this.getArguments() != null) {
             mVisitPlaces = this.getArguments().getParcelableArrayList(MainActivity.KEY_VISIT_PLACES);
             mDestination = (Destination) Parcels.unwrap(this.getArguments().getParcelable(MainActivity.KEY_DESTINATION));
-            mHotelClicked = (Hotel) Parcels.unwrap(this.getArguments().getParcelable(MainActivity.KEY_HOTEL_CLICKED));
+            mHotelsTapped = this.getArguments().getParcelableArrayList(MainActivity.KEY_HOTELS_TAPPED);
         }
         if (mDestination != null) {
             Log.i(TAG, "MAP DESTINATION: " + mDestination.getName());
             mDestinationLocation = new LatLng(mDestination.getLocation().getLatitude(), mDestination.getLocation().getLongitude());
-        }
-        if (mHotelClicked != null){
-            mHotelClickedLocation = new LatLng(mHotelClicked.getLocation().getLatitude(), mHotelClicked.getLocation().getLongitude());
         }
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.destinationMap);
         mapFragment.getMapAsync(this);
@@ -103,13 +102,17 @@ public class DestinationMapFragment extends Fragment implements OnMapReadyCallba
                 dropPinEffect(placeMarker);
             }
         }
-        if (mHotelClicked != null) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mHotelClickedLocation, DEFAULT_ZOOM));
-            Marker hotelMarker = mMap.addMarker(new MarkerOptions().position(mHotelClickedLocation)
-                    .title(mHotelClicked.getName())
-                    .snippet(mHotelClicked.getAddress())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-            dropPinEffect(hotelMarker);
+        if (mHotelsTapped != null && mHotelsTapped.size() > 0){
+            mFirstHotelLocation = new LatLng(mHotelsTapped.get(0).getLocation().getLatitude(), mHotelsTapped.get(0).getLocation().getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mFirstHotelLocation, DEFAULT_ZOOM));
+            for (Hotel hotel : mHotelsTapped){
+                LatLng hotelLocation = new LatLng(hotel.getLocation().getLatitude(), hotel.getLocation().getLongitude());
+                Marker placeMarker = mMap.addMarker(new MarkerOptions().position(hotelLocation)
+                        .title(hotel.getName())
+                        .snippet(hotel.getAddress())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                dropPinEffect(placeMarker);
+            }
         }
         mUiSettings = mMap.getUiSettings();
         mUiSettings.setZoomControlsEnabled(true);

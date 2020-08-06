@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
     public static final String KEY_VISIT_PLACES = "VISIT PLACES";
     public static final String KEY_DESTINATION = "DESTINATION";
     public static final String KEY_HOTEL_CLICKED = "HOTEL CLICKED";
+    public static final String KEY_HOTELS_TAPPED = "HOTELS DOUBLE TAPPED";
     public static final int SEARCH_RADIUS = 5000; //in meters
     private static final String MAX_WIDTH = "300";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
     private Destination mCurrentDestination;
     private List<VisitPlace> mVisitPlaces;
     private Hotel mHotelClicked;
+    private List<Hotel> mHotelsTapped;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
         mPlacesClient = Places.createClient(this);
 
         mPlaceIds = new ArrayList<>();
+        mHotelsTapped = new ArrayList<>();
         mButtomNavigation = mainBinding.bottomNavigation;
 
         mButtomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -149,8 +152,8 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
                         if (mCurrentDestination != null){
                             placesBundle.putParcelable(KEY_DESTINATION, Parcels.wrap(mCurrentDestination));
                         }
-                        if (mHotelClicked != null){
-                            placesBundle.putParcelable(KEY_HOTEL_CLICKED, Parcels.wrap(mHotelClicked));
+                        if (mHotelsTapped != null){
+                            placesBundle.putParcelableArrayList(KEY_HOTELS_TAPPED, (ArrayList<? extends Parcelable>) mHotelsTapped);
                         }
                         fragment.setArguments(placesBundle);
                         break;
@@ -188,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
     @Override
     public void getHotel(Hotel hotel) {
         mHotelClicked = hotel;
+        mHotelsTapped.add(mHotelClicked);
     }
 
     public void onSearchCalled() {

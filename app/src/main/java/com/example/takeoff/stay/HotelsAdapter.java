@@ -67,7 +67,7 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView mTvHotelName;
         private ImageView mIvHotelImage;
@@ -119,18 +119,6 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
             mRatingBarHotel.setRating((float) hotel.getRating());
             if (hotel.getImageURL() != null){
                 Glide.with(mContext).load(hotel.getImageURL()).fitCenter().into(mIvHotelImage);
-            }
-        }
-
-        @Override
-        public void onClick(View view) {
-            //get hotel position
-            int position = getAdapterPosition();
-            //position must be valid, i.e. actually exists in the view
-            if (position != RecyclerView.NO_POSITION) {
-                //get hotel at position
-                Hotel hotel = mHotels.get(position);
-                mHotelClickListener.onHotelClick(hotel);
             }
         }
     }
