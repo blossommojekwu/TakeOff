@@ -1,12 +1,16 @@
 package com.example.takeoff.stay;
 
 import android.content.Context;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,6 +75,7 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
         private TextView mTvHotelWebsite;
         private TextView mTvHotelPhoneNumber;
         private RatingBar mRatingBarHotel;
+        private Button mBtnFavorite;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,7 +85,29 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
             mTvHotelWebsite = itemView.findViewById(R.id.tvHotelWebsite);
             mTvHotelPhoneNumber = itemView.findViewById(R.id.tvHotelPhoneNumber);
             mRatingBarHotel = itemView.findViewById(R.id.ratingBarHotel);
-            itemView.setOnClickListener(this);
+            mBtnFavorite = itemView.findViewById(R.id.btnFavorite);
+            itemView.setOnTouchListener(new View.OnTouchListener() {
+                private GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener(){
+                    @Override
+                    public boolean onDoubleTap(MotionEvent e) {
+                        mBtnFavorite.setVisibility(View.VISIBLE);
+                        //get hotel position
+                        int position = getAdapterPosition();
+                        //position must be valid, i.e. actually exists in the view
+                        if (position != RecyclerView.NO_POSITION) {
+                            //get hotel at position
+                            Hotel hotel = mHotels.get(position);
+                            mHotelClickListener.onHotelClick(hotel);
+                        }
+                        return super.onDoubleTap(e);
+                    }
+                });
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    gestureDetector.onTouchEvent(motionEvent);
+                    return true;
+                }
+            });
         }
 
         public void bind(Hotel hotel) {

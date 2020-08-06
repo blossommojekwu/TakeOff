@@ -28,4 +28,7 @@
     <dimen name="buttonSmallHeight">30dp</dimen>
     <dimen name="dialogHeight">200dp</dimen>
     <dimen name="btnSizeWidth">70dp</dimen>
+    <dimen name="btnFavoriteWidth">50dp</dimen>
+    <dimen name="btnFavoriteHeight">35dp</dimen>
+
 </resources>

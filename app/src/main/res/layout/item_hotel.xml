@@ -8,12 +8,13 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/marginTiny"
     app:cardCornerRadius="@dimen/card_corner_radius">
-
     <LinearLayout
+        android:id="@+id/hotelInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/paddingSmall">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvHotelName"
@@ -46,8 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="all"
-            android:linksClickable="true"
             android:fontFamily="@font/montserrat"
+            android:linksClickable="true"
             android:text="No website available"
             android:textColor="@color/colorBlack" />
 
@@ -55,9 +56,11 @@
             android:id="@+id/tvHotelPhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:fontFamily="@font/montserrat"
             android:text="800-000-0000"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorBlack"
+            android:visibility="gone" />
 
         <RatingBar
             android:id="@+id/ratingBarHotel"
@@ -68,4 +71,17 @@
             android:numStars="5"
             android:stepSize="0.1" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnFavorite"
+        android:layout_width="@dimen/btnFavoriteWidth"
+        android:layout_height="@dimen/btnFavoriteHeight"
+        android:layout_gravity="bottom|right"
+        android:background="@color/colorBlack"
+        android:backgroundTint="@color/colorWhite"
+        android:visibility="gone"
+        app:icon="@drawable/ic_favorite_filled_24"
+        app:iconTint="@color/colorFavOrange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/hotelInfo" />
 </androidx.cardview.widget.CardView>
