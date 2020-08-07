@@ -1,6 +1,7 @@
 package com.example.takeoff.stay;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,6 +27,8 @@ import java.util.List;
  * - displays data from Hotel model to viewholder in Recycler View
  */
 public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder> {
+
+    public static final String TAG = "HotelsAdapter";
 
     public interface OnHotelClickListener{
         void onHotelClick(Hotel hotel);
@@ -76,6 +79,7 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
         private TextView mTvHotelPhoneNumber;
         private RatingBar mRatingBarHotel;
         private Button mBtnFavorite;
+        private int mVisibility;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,11 +90,14 @@ public class HotelsAdapter extends RecyclerView.Adapter<HotelsAdapter.ViewHolder
             mTvHotelPhoneNumber = itemView.findViewById(R.id.tvHotelPhoneNumber);
             mRatingBarHotel = itemView.findViewById(R.id.ratingBarHotel);
             mBtnFavorite = itemView.findViewById(R.id.btnFavorite);
+            mVisibility = View.GONE;
+            mBtnFavorite.setVisibility(mVisibility);
             itemView.setOnTouchListener(new View.OnTouchListener() {
                 private GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener(){
                     @Override
                     public boolean onDoubleTap(MotionEvent e) {
-                        mBtnFavorite.setVisibility(View.VISIBLE);
+                        mVisibility = View.VISIBLE;
+                        mBtnFavorite.setVisibility(mVisibility);
                         //get hotel position
                         int position = getAdapterPosition();
                         //position must be valid, i.e. actually exists in the view
