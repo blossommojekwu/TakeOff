@@ -215,6 +215,8 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
                 //saveDestination using place
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 saveDestination(mPlace, currentUser);
+                //clear out data of hotels tapped with every new destination searched
+                mHotelsTapped = new ArrayList<>();
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.e(TAG, status.getStatusMessage());
