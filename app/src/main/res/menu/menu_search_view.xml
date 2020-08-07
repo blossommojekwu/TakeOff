@@ -4,8 +4,12 @@
     <item
         android:id="@+id/actionSearch"
         android:icon="@android:drawable/ic_menu_search"
-        android:orderInCategory="5"
         android:title="Search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
+    <item
+        android:id="@+id/profileId"
+        android:icon="@drawable/ic_profile_24"
+        android:title="Profile"
+        app:showAsAction="always" />
 </menu>

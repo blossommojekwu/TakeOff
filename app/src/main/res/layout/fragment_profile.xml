@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.ProfileFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvProfile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="@dimen/cardElevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/marginSmall">
+
+            <ImageView
+                android:id="@+id/ivProfilePicture"
+                android:layout_width="@dimen/imageMedium"
+                android:layout_height="@dimen/imageMedium"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/marginSmall"
+                tools:src="@tools:sample/avatars" />
+
+            <Button
+                android:id="@+id/btnChangeProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:text="Change Profile Picture"
+                android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Button" />
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginHuge"
+                android:text="Logout"
+                android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Button" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

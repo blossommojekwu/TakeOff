@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/private/var/folders/x2/sfdry2757ngcfv0kxc4t5v8w0000gn/T/AppTranslocation/A2ED0138-E7DE-4F34-8E0F-473541C4E81D/d/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/favorite/baseline_favorite_24.xml" />
+                                      <entry key="url" value="jar:file:/private/var/folders/x2/sfdry2757ngcfv0kxc4t5v8w0000gn/T/AppTranslocation/A2ED0138-E7DE-4F34-8E0F-473541C4E81D/d/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/person/baseline_person_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ff5f5a" />
-                            <entry key="outputName" value="ic_favorite_filled_24" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_profile_24" />
                           </map>
                         </option>
                       </PersistentState>

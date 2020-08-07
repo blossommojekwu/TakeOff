@@ -109,9 +109,15 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
             case R.id.actionSearch:
                 onSearchCalled();
                 return true;
+            case R.id.profileId:
+                showProfileFragment();
+                return true;
             default:
                 return false;
         }
+    }
+
+    private void showProfileFragment() {
     }
 
     @Override
