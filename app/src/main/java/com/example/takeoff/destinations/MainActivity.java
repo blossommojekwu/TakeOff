@@ -3,6 +3,7 @@ package com.example.takeoff.destinations;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -120,7 +121,10 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
         // layout of activity is stored in a special property called root
         View mainView = mainBinding.getRoot();
         setContentView(mainView);
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setLogo(R.drawable.ic_flight_takeoff_24);
+        actionBar.setDisplayUseLogoEnabled(true);
         if (!Places.isInitialized()) {
             // Initialize the SDK
             Places.initialize(getApplicationContext(), getString(R.string.google_places_api_key));
