@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.takeoff.R;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 /**
@@ -51,6 +54,11 @@ public class ProfileFragment extends DialogFragment {
         mIvProfilePicture = view.findViewById(R.id.ivProfilePicture);
         mBtnChangeProfile = view.findViewById(R.id.btnChangeProfile);
         mBtnLogout = view.findViewById(R.id.btnLogout);
+
+        ParseFile profilePic = ParseUser.getCurrentUser().getParseFile("profilePicture");
+        if (profilePic != null){
+            Glide.with(this).load(profilePic.getUrl()).fitCenter().transform(new CircleCrop()).into(mIvProfilePicture);
+        }
 
         mBtnLogout.setOnClickListener(new View.OnClickListener() {
             @Override

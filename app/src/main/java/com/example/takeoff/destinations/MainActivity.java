@@ -25,6 +25,7 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.takeoff.R;
 import com.example.takeoff.databinding.ActivityMainBinding;
+import com.example.takeoff.login.ProfileFragment;
 import com.example.takeoff.map.DestinationMapFragment;
 import com.example.takeoff.models.Destination;
 import com.example.takeoff.models.Hotel;
@@ -118,6 +119,9 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
     }
 
     private void showProfileFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ProfileFragment profileFragment = ProfileFragment.newInstance("Profile Info");
+        profileFragment.show(fragmentManager, "fragment_profile");
     }
 
     @Override
