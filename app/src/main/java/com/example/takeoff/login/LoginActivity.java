@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.takeoff.destinations.MainActivity;
@@ -35,6 +36,10 @@ public class LoginActivity extends AppCompatActivity {
         ActivityLoginBinding loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         View loginView = loginBinding.getRoot();
         setContentView(loginView);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setLogo(R.drawable.ic_flight_takeoff_24);
+        actionBar.setDisplayUseLogoEnabled(true);
 
         //if user already logged in, go to MainActivity
         if (ParseUser.getCurrentUser() != null){

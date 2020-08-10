@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -56,6 +57,10 @@ public class SignupActivity extends AppCompatActivity {
         ActivitySignupBinding signupBinding = ActivitySignupBinding.inflate(getLayoutInflater());
         View signupView = signupBinding.getRoot();
         setContentView(signupView);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setLogo(R.drawable.ic_flight_takeoff_24);
+        actionBar.setDisplayUseLogoEnabled(true);
 
         mEtSignupUsername = signupBinding.etSignupUsername;
         mEtSignupPassword = signupBinding.etSignupPassword;
