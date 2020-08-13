@@ -55,7 +55,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginMedium"
+        android:layout_marginTop="@dimen/marginLarge"
         android:backgroundTint="@color/colorAccent"
         android:fontFamily="@font/montserrat"
         android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Button"
