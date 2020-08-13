@@ -32,16 +32,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginBottom="@dimen/marginHuge"
+                android:visibility="gone"
                 android:text="Change Profile Picture"
-                android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Button" />
+                android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Button"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginHuge"
+                android:layout_marginTop="@dimen/marginSmall"
                 android:text="Logout"
-                android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Button" />
+                android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Button"
+                android:textStyle="bold" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

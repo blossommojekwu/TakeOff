@@ -152,13 +152,10 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
                 Fragment fragment = null;
                 switch (menuItem.getItemId()) {
                     case R.id.actionHome: fragment = new DestinationsFragment();
-                        Toast.makeText(MainActivity.this, R.string.home, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionPlan: fragment = new PlanFragment();
-                        Toast.makeText(MainActivity.this, R.string.plan, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionMap: fragment = new DestinationMapFragment();
-                        Toast.makeText(MainActivity.this, R.string.map, Toast.LENGTH_SHORT).show();
                         Bundle placesBundle = new Bundle();
                         if (mVisitPlaces != null) {
                             placesBundle.putParcelableArrayList(KEY_VISIT_PLACES, (ArrayList<? extends Parcelable>) mVisitPlaces);
@@ -172,11 +169,9 @@ public class MainActivity extends AppCompatActivity implements VisitPlaceFragmen
                         fragment.setArguments(placesBundle);
                         break;
                     case R.id.actionStay: fragment = new StayFragment();
-                        Toast.makeText(MainActivity.this, R.string.stay, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.actionVisit:
                     default: fragment = new VisitPlaceFragment();
-                        Toast.makeText(MainActivity.this, R.string.visit, Toast.LENGTH_SHORT).show();
                         //pass destination data from activity to visitplacefragment
                         if (mCurrentDestination != null){
                             Bundle bundle = new Bundle();

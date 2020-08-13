@@ -53,14 +53,23 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginMedium"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="@font/montserrat"
+        android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Button"
+        android:textStyle="bold"
         android:text="Log In" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/marginSmall"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="@font/montserrat"
+        android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Button"
+        android:textStyle="bold"
         android:text="Sign Up" />
 </LinearLayout>
